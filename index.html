@@ -1,458 +1,184 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site 360° - Visualizador Panorâmico</title>
-    <!-- Pannellum CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
-    <style>
-        /* ===== ESTILOS GERAIS DO SITE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tour Virtual 360°</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f0f1e;
-            color: #fff;
-            scroll-behavior: smooth;
-            line-height: 1.6;
-        }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 
-        /* ===== CABEÇALHO / NAV ===== */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            background: rgba(34, 34, 34, 0.95);
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 191, 255, 0.3);
-        }
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+body {
+    font-family: Arial;
+    background: #0f0f1e;
+    color: #fff;
+}
 
-        nav a {
-            color: white;
-            margin-left: 25px;
-            text-decoration: none;
-            transition: 0.3s;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: #111;
+}
 
-        nav a:hover {
-            color: #00bfff;
-        }
+.logo { font-size: 22px; color: #00bfff; }
 
-        /* ===== SEÇÕES ===== */
-        .hero {
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(rgba(15, 15, 30, 0.7), rgba(15, 15, 30, 0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
-            padding: 0 20px;
-        }
+nav a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+}
 
-        .hero h1 {
-            font-size: 56px;
-            margin-bottom: 20px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
+.hero {
+    height: 40vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
-        .hero p {
-            font-size: 20px;
-            color: #b0c4de;
-            max-width: 700px;
-        }
+.secao {
+    padding: 40px;
+    max-width: 1200px;
+    margin: auto;
+}
 
-        .secao {
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
+#panorama {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+}
 
-        .secao h2 {
-            font-size: 36px;
-            margin-bottom: 30px;
-            color: #00bfff;
-        }
+.scene-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-        /* ===== CONTAINER DO VISUALIZADOR 3D ===== */
-        .viewer-box {
-            background: rgba(30, 60, 114, 0.2);
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 40px auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-        }
+.scene-btn {
+    padding: 8px 15px;
+    background: #00bfff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
-        #panorama {
-            width: 100%;
-            height: 550px;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            cursor: crosshair;
-        }
-
-        /* ===== CONTROLES E FORMULÁRIOS ===== */
-        .viewer-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(0, 191, 255, 0.1);
-            border-radius: 10px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .control-group label { font-size: 13px; color: #b0c4de; }
-
-        input[type="range"] { width: 120px; cursor: pointer; }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-
-        .btn-primary { background: #00bfff; color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4); }
-        .btn-success { background: #00d4aa; color: white; }
-        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 212, 170, 0.4); }
-        .btn-danger { background: #ff6b6b; color: white; }
-
-        /* ===== SLIDER ===== */
-        .slider-container { margin-top: 30px; text-align: left; }
-        .slider-wrapper { position: relative; overflow: hidden; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; }
-        .slider { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0; scroll-behavior: smooth; }
-        .slide-item { flex: 0 0 130px; height: 130px; border-radius: 10px; cursor: pointer; border: 3px solid transparent; transition: 0.3s; overflow: hidden; }
-        .slide-item.active { border-color: #00bfff; box-shadow: 0 0 15px #00bfff; }
-        .slide-item img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* ===== HOTSPOTS FORM ===== */
-        .hotspots-form-container {
-            margin-top: 30px;
-            padding: 25px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            text-align: left;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 20px;
-            align-items: flex-end;
-        }
-
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group label { font-size: 12px; color: #00bfff; font-weight: bold; }
-        .form-group input { padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid #333; border-radius: 8px; color: white; }
-        .form-group input:focus { border-color: #00bfff; outline: none; }
-
-        /* ===== VOLTAR AO TOPO ===== */
-        #voltarTopo {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #00bfff;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: 0.3s;
-            display: none;
-            z-index: 2000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        #voltarTopo:hover { transform: scale(1.1); background: #0099cc; }
-
-        .status-msg { margin-top: 15px; padding: 10px; border-radius: 8px; display: none; }
-        .status-success { display: block; background: rgba(0, 212, 170, 0.2); color: #00d4aa; border-left: 4px solid #00d4aa; }
-
-        /* ===== RESPONSIVIDADE ===== */
-        @media (max-width: 768px) {
-            .form-grid { grid-template-columns: 1fr; }
-            header { padding: 20px; }
-            .hero h1 { font-size: 36px; }
-        }
-    </style>
+#voltarTopo {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #00bfff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+</style>
 </head>
+
 <body id="topo">
 
-    <!-- MENU DE NAVEGAÇÃO -->
-    <header>
-        <div class="logo">PanoViewer 360°</div>
-        <nav>
-            <a href="#topo">Home</a>
-            <a href="#visualizador">3D Viewer</a>
-            <a href="#sobre">Sobre</a>
-            <a href="#contato">Contato</a>
-        </nav>
-    </header>
+<header>
+    <div class="logo">🌍 Tour Virtual</div>
+    <nav>
+        <a href="#topo">Home</a>
+        <a href="#viewer">Visualizador</a>
+    </nav>
+</header>
 
-    <!-- SEÇÃO HERO -->
-    <section class="hero">
-        <h1>Sua Experiência Imersiva</h1>
-        <p>Explore ambientes incríveis com nosso visualizador 3D panorâmico de alta performance.</p>
-    </section>
+<section class="hero">
+    <h1>Tour 360°</h1>
+</section>
 
-    <!-- SEÇÃO DO VISUALIZADOR 3D -->
-    <section id="visualizador" class="secao">
-        <h2>Visualizador Panorâmico</h2>
-        <p style="margin-bottom: 40px; color: #b0c4de;">Navegue pelas imagens abaixo ou adicione seus próprios pontos de interesse interativos.</p>
+<section id="viewer" class="secao">
+    <h2>Visualizador</h2>
 
-        <div class="viewer-box">
-            <!-- CONTROLES -->
-            <div class="viewer-controls">
-                <div class="control-group">
-                    <label>Zoom:</label>
-                    <input type="range" id="zoomRange" min="0" max="100" value="50">
-                </div>
-                <div class="control-group">
-                    <label>Giro Automático:</label>
-                    <input type="checkbox" id="autoRotate" style="width: 20px; height: 20px;">
-                </div>
-                <div class="control-group">
-                    <button class="btn btn-primary" onclick="resetView()">Resetar</button>
-                </div>
-            </div>
+    <div class="scene-selector" id="sceneSelector"></div>
 
-            <!-- O VISUALIZADOR -->
-            <div id="panorama"></div>
+    <div id="panorama"></div>
+</section>
 
-            <!-- SLIDER DE GALERIA -->
-            <div class="slider-container">
-                <p style="font-weight: bold; margin-bottom: 10px; color: #00bfff;">📸 Galeria</p>
-                <div class="slider-wrapper">
-                    <div class="slider" id="slider"></div>
-                </div>
-            </div>
+<button id="voltarTopo">↑</button>
 
-            <!-- FORMULÁRIO DE HOTSPOTS -->
-            <div class="hotspots-form-container">
-                <p style="font-weight: bold; margin-bottom: 15px; color: #00bfff;">🎯 Adicionar Link para Modelo 3D</p>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Título do Ponto</label>
-                        <input type="text" id="hotspotTitle" placeholder="Ex: Ver Quarto 3D">
-                    </div>
-                    <div class="form-group">
-                        <label>Link do Modelo (URL)</label>
-                        <input type="url" id="hotspotLink" placeholder="https://sketchfab.com/...">
-                    </div>
-                    <button class="btn btn-success" id="hotspotBtn" onclick="toggleHotspotMode()">Adicionar Ponto</button>
-                </div>
-                <div id="statusMsg" class="status-msg"></div>
-            </div>
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
-            <!-- UPLOAD DE NOVAS IMAGENS -->
-            <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
-                <label for="fileInput" class="btn btn-primary" style="display: inline-block;">📤 Carregar Nova Foto 360°</label>
-                <input type="file" id="fileInput" style="display: none;" accept="image/*" multiple>
-            </div>
-        </div>
-    </section>
+<script>
+// CENAS
+const scenes = [
+    {
+        name: "Panorama 1",
+        image: "https://i.postimg.cc/rwfXz5wh/panorama-01.jpg",
+        hotspots: [
+            { title: "Modelo 3D 1", link: "https://sketchfab.com", pitch: 0, yaw: 45 },
+            { title: "Modelo 3D 2", link: "https://sketchfab.com", pitch: -20, yaw: 180 }
+        ]
+    },
+    {
+        name: "Panorama 2",
+        image: "https://i.postimg.cc/SsTJrndH/panorama-02.jpg",
+        hotspots: [
+            { title: "Clique aqui", link: "https://exemplo.com", pitch: 10, yaw: 90 }
+        ]
+    },
+    {
+        name: "Panorama 3",
+        image: "https://i.postimg.cc/pLfrSGkY/panorama-03.jpg",
+        hotspots: []
+    }
+	
+];
 
-    <!-- SEÇÃO SOBRE -->
-    <section id="sobre" class="secao">
-        <h2>Sobre o Projeto</h2>
-        <p>Desenvolvido para proporcionar a melhor visualização de ambientes em 360 graus. Ideal para corretores, arquitetos e entusiastas de tecnologia.</p>
-    </section>
+let viewer = null;
 
-    <!-- SEÇÃO CONTATO -->
-    <section id="contato" class="secao">
-        <h2>Contato</h2>
-        <p>Tem alguma dúvida? Entre em contato conosco pelo e-mail: <br><strong>suporte@panoviewer.com</strong></p>
-    </section>
+// INICIAR
+function init() {
+    const selector = document.getElementById('sceneSelector');
 
-    <!-- BOTÃO VOLTAR AO TOPO -->
-    <button id="voltarTopo">↑</button>
+    scenes.forEach((scene, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'scene-btn';
+        btn.textContent = scene.name;
+        btn.onclick = () => loadScene(i);
+        selector.appendChild(btn);
+    });
 
-    <!-- SCRIPTS -->
-    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-    <script>
-        let viewer = null;
-        let images = [];
-        let currentIndex = 0;
-        let hotspotMode = false;
-        let hotspots = {};
+    loadScene(0);
+}
 
-        // Função para criar imagens de exemplo (gradientes)
-        function createExampleImage(text, color1, color2) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 2048; canvas.height = 1024;
-            const ctx = canvas.getContext('2d');
-            const grad = ctx.createLinearGradient(0, 0, 2048, 0);
-            grad.addColorStop(0, color1); grad.addColorStop(1, color2);
-            ctx.fillStyle = grad; ctx.fillRect(0, 0, 2048, 1024);
-            ctx.fillStyle = 'white'; ctx.font = 'bold 80px Arial'; ctx.textAlign = 'center';
-            ctx.fillText(text, 1024, 512);
-            return canvas.toDataURL();
-        }
+// CARREGAR CENA
+function loadScene(index) {
+    const scene = scenes[index];
 
-        // Inicialização
-        function init() {
-            // Definição de imagens iniciais (pode ser trocado por arquivos locais como panorama1.jpg)
-            images = [
-                { name: 'Ambiente 1', url: createExampleImage('Panorama Azul', '#1e3c72', '#2a5298') },
-                { name: 'Ambiente 2', url: createExampleImage('Panorama Roxo', '#667eea', '#764ba2') },
-                { name: 'Ambiente 3', url: createExampleImage('Panorama Verde', '#00b894', '#00cec9') }
-            ];
-            images.forEach((_, i) => hotspots[i] = []);
-            renderSlider();
-            loadImage(0);
-        }
+    if (viewer) viewer.destroy();
 
-        function renderSlider() {
-            const slider = document.getElementById('slider');
-            slider.innerHTML = '';
-            images.forEach((img, i) => {
-                const item = document.createElement('div');
-                item.className = `slide-item ${i === currentIndex ? 'active' : ''}`;
-                item.innerHTML = `<img src="${img.url}">`;
-                item.onclick = () => loadImage(i);
-                slider.appendChild(item);
+    viewer = pannellum.viewer('panorama', {
+        type: 'equirectangular',
+        panorama: scene.image,
+        autoLoad: true
+    });
+
+    viewer.on('load', () => {
+        scene.hotspots.forEach(hs => {
+            viewer.addHotSpot({
+                pitch: hs.pitch,
+                yaw: hs.yaw,
+                type: 'info',
+                text: hs.title,
+                URL: hs.link
             });
-        }
-
-        function loadImage(index) {
-            currentIndex = index;
-            if (viewer) viewer.destroy();
-            viewer = pannellum.viewer('panorama', {
-                type: 'equirectangular',
-                panorama: images[index].url,
-                autoLoad: true,
-                yaw: 0, pitch: 0, hfov: 100
-            });
-            // Carregar hotspots salvos
-            hotspots[index].forEach(hs => {
-                viewer.addHotSpot({ pitch: hs.pitch, yaw: hs.yaw, type: 'info', text: hs.text, URL: hs.url });
-            });
-            renderSlider();
-        }
-
-        // Lógica de Hotspots
-        function toggleHotspotMode() {
-            const title = document.getElementById('hotspotTitle').value;
-            const link = document.getElementById('hotspotLink').value;
-            if (!title || !link) { alert("Preencha o título e o link!"); return; }
-            
-            hotspotMode = !hotspotMode;
-            const btn = document.getElementById('hotspotBtn');
-            if (hotspotMode) {
-                btn.textContent = "Clique na Imagem...";
-                btn.className = "btn btn-danger";
-                document.getElementById('statusMsg').textContent = "🎯 Modo de Seleção Ativo: Clique em um local da foto 360°";
-                document.getElementById('statusMsg').className = "status-msg status-success";
-            } else {
-                resetHotspotBtn();
-            }
-        }
-
-        function resetHotspotBtn() {
-            const btn = document.getElementById('hotspotBtn');
-            btn.textContent = "Adicionar Ponto";
-            btn.className = "btn btn-success";
-            document.getElementById('statusMsg').style.display = "none";
-            hotspotMode = false;
-        }
-
-        document.getElementById('panorama').addEventListener('click', function(e) {
-            if (!hotspotMode || !viewer) return;
-            const coords = viewer.mouseEventToCoords(e);
-            const pitch = coords[0];
-            const yaw = coords[1];
-            const title = document.getElementById('hotspotTitle').value;
-            const link = document.getElementById('hotspotLink').value;
-
-            viewer.addHotSpot({ pitch, yaw, type: 'info', text: title, URL: link });
-            hotspots[currentIndex].push({ pitch, yaw, text: title, url: link });
-            
-            document.getElementById('hotspotTitle').value = '';
-            document.getElementById('hotspotLink').value = '';
-            resetHotspotBtn();
-            alert("Ponto adicionado com sucesso!");
         });
+    });
+}
 
-        // Controles de visualização
-        document.getElementById('zoomRange').oninput = (e) => {
-            const hfov = 120 - (e.target.value * 0.9);
-            viewer.setHfov(hfov);
-        };
-        document.getElementById('autoRotate').onchange = (e) => {
-            viewer.setAutoRotate(e.target.checked ? -2 : 0);
-        };
-        function resetView() { viewer.setPitch(0); viewer.setYaw(0); viewer.setHfov(100); }
+// BOTÃO VOLTAR TOPO
+document.getElementById('voltarTopo').onclick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
-        // Botão Voltar ao Topo
-        const btnTopo = document.getElementById("voltarTopo");
-        window.onscroll = function() {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                btnTopo.style.display = "block";
-            } else {
-                btnTopo.style.display = "none";
-            }
-        };
-        btnTopo.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+window.onload = init;
+</script>
 
-        // Upload
-        document.getElementById('fileInput').onchange = (e) => {
-            Array.from(e.target.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const newIdx = images.length;
-                    images.push({ name: file.name, url: ev.target.result });
-                    hotspots[newIdx] = [];
-                    renderSlider();
-                    loadImage(newIdx);
-                };
-                reader.readAsDataURL(file);
-            });
-        };
-
-        window.onload = init;
-    </script>
 </body>
 </html>
