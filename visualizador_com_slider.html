@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador 3D Panorâmico com Slider</title>
+    <!-- Pannellum CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* ===== CONTAINER PRINCIPAL ===== */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===== CABEÇALHO ===== */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease;
+        }
+
+        header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #b0c4de;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== CONTAINER DO VISUALIZADOR ===== */
+        .viewer-box {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.3) 0%, rgba(42, 82, 152, 0.3) 100%);
+            border: 2px solid rgba(0, 191, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 60px rgba(0, 191, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.8s ease 0.2s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== VISUALIZADOR ===== */
+        #panorama {
+            width: 100%;
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ===== CONTROLES SUPERIORES ===== */
+        .viewer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0, 191, 255, 0.1);
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .control-left {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-group label {
+            font-size: 13px;
+            color: #b0c4de;
+            white-space: nowrap;
+        }
+
+        .control-group input[type="range"] {
+            width: 120px;
+            height: 6px;
+            border-radius: 3px;
+            background: #444;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 191, 255, 0.4);
+        }
+
+        .control-group input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 191, 255, 0.4);
+        }
+
+        .control-value {
+            background: rgba(0, 191, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #00bfff;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* ===== BOTÕES ===== */
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        /* ===== SLIDER DE IMAGENS ===== */
+        .slider-container {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .slider-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #00bfff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+        }
+
+        .slider {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 5px;
+        }
+
+        .slider::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .slider::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .slider::-webkit-scrollbar-thumb {
+            background: rgba(0, 191, 255, 0.5);
+            border-radius: 3px;
+        }
+
+        .slider::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 191, 255, 0.8);
+        }
+
+        .slide-item {
+            flex: 0 0 120px;
+            height: 120px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+            padding: 10px;
+            color: #b0c4de;
+        }
+
+        .slide-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .slide-item:hover {
+            transform: scale(1.05);
+            border-color: rgba(0, 191, 255, 0.5);
+        }
+
+        .slide-item.active {
+            border-color: #00bfff;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
+        }
+
+        .slide-item.active img {
+            filter: brightness(1.2);
+        }
+
+        /* ===== SETAS DO SLIDER ===== */
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .slider-arrow:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+        }
+
+        .slider-arrow.left {
+            left: 10px;
+        }
+
+        .slider-arrow.right {
+            right: 10px;
+        }
+
+        /* ===== UPLOAD ===== */
+        .upload-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 191, 255, 0.1);
+            border: 2px dashed #00bfff;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .upload-section h3 {
+            color: #00bfff;
+            margin-bottom: 15px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 32px;
+            }
+
+            #panorama {
+                height: 300px;
+            }
+
+            .viewer-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .control-left,
+            .control-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .slide-item {
+                flex: 0 0 100px;
+                height: 100px;
+            }
+
+            .slider-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- CABEÇALHO -->
+        <header>
+            <h1>🌍 Visualizador 3D Panorâmico</h1>
+            <p>Explore imagens 360° com um simples clique</p>
+        </header>
+
+        <!-- CONTAINER DO VISUALIZADOR -->
+        <div class="viewer-box">
+            <!-- CONTROLES -->
+            <div class="viewer-controls">
+                <div class="control-left">
+                    <div class="control-group">
+                        <label for="zoomRange">Zoom:</label>
+                        <input type="range" id="zoomRange" min="0" max="100" value="50">
+                        <span class="control-value" id="zoomValue">50%</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="autoRotate">Rotação Automática:</label>
+                        <input type="checkbox" id="autoRotate" class="checkbox-custom">
+                    </div>
+                </div>
+                <div class="control-right">
+                    <button class="btn-primary" onclick="resetView()">🔄 Resetar</button>
+                    <button class="btn-secondary" onclick="clearImage()">🗑️ Limpar</button>
+                </div>
+            </div>
+
+            <!-- VISUALIZADOR -->
+            <div id="panorama"></div>
+
+            <!-- SLIDER DE IMAGENS -->
+            <div class="slider-container">
+                <div class="slider-title">📸 Galeria de Imagens</div>
+                <div class="slider-wrapper">
+                    <div class="slider" id="slider">
+                        <!-- Slides serão adicionados dinamicamente -->
+                    </div>
+                    <button class="slider-arrow left" onclick="scrollSlider(-150)">❮</button>
+                    <button class="slider-arrow right" onclick="scrollSlider(150)">❯</button>
+                </div>
+            </div>
+
+            <!-- UPLOAD -->
+            <div class="upload-section">
+                <h3>📤 Adicionar Imagens à Galeria</h3>
+                <div class="file-input-wrapper">
+                    <label for="fileInput" class="file-input-label">
+                        Clique para selecionar imagens
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*" multiple>
+                </div>
+                <p style="margin-top: 10px; font-size: 12px; color: #b0c4de;">
+                    Você pode selecionar múltiplas imagens de uma vez
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pannellum JS -->
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+    <script>
+        let viewer = null;
+        let images = [];
+        let currentIndex = 0;
+
+        // Criar imagem de exemplo
+        function createExampleImage(text, color1, color2) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 2048;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+            
+            // Gradiente
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Texto
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 80px Arial';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 10;
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+            
+            return canvas.toDataURL('image/png');
+        }
+
+        // Inicializar com imagens de exemplo
+        function initializeExamples() {
+            images = [
+                { name: 'Gradiente Azul', url: createExampleImage('Azul', '#1e3c72', '#2a5298') },
+                { name: 'Gradiente Roxo', url: createExampleImage('Roxo', '#667eea', '#764ba2') },
+                { name: 'Gradiente Verde', url: createExampleImage('Verde', '#00b894', '#00cec9') },
+                { name: 'Gradiente Laranja', url: createExampleImage('Laranja', '#ff7675', '#fdcb6e') }
+            ];
+            renderSlider();
+            loadImage(0);
+        }
+
+        // Renderizar slider
+        function renderSlider() {
+            const slider = document.getElementById('slider');
+            slider.innerHTML = '';
+            
+            images.forEach((img, index) => {
+                const slide = document.createElement('div');
+                slide.className = `slide-item ${index === currentIndex ? 'active' : ''}`;
+                slide.innerHTML = `<img src="${img.url}" alt="${img.name}">`;
+                slide.onclick = () => loadImage(index);
+                slider.appendChild(slide);
+            });
+        }
+
+        // Carregar imagem
+        function loadImage(index) {
+            if (index < 0 || index >= images.length) return;
+            
+            currentIndex = index;
+            
+            if (viewer) {
+                viewer.destroy();
+            }
+
+            viewer = pannellum.viewer('panorama', {
+                type: 'equirectangular',
+                panorama: images[index].url,
+                autoLoad: true,
+                showControls: true,
+                mouseZoom: true,
+                doubleClickZoom: true,
+                autoRotate: document.getElementById('autoRotate').checked ? -2 : 0,
+                autoRotateInactivityDelay: 3000,
+                yaw: 0,
+                pitch: 0,
+                hfov: 100,
+                minHfov: 30,
+                maxHfov: 120
+            });
+
+            // Atualizar slider
+            renderSlider();
+        }
+
+        // Controle de Zoom
+        document.getElementById('zoomRange').addEventListener('input', function(e) {
+            if (viewer) {
+                const zoomValue = parseInt(e.target.value);
+                const hfov = 30 + (120 - 30) * (100 - zoomValue) / 100;
+                viewer.setHfov(hfov);
+                document.getElementById('zoomValue').textContent = zoomValue + '%';
+            }
+        });
+
+        // Rotação Automática
+        document.getElementById('autoRotate').addEventListener('change', function(e) {
+            if (viewer) {
+                viewer.setAutoRotate(e.target.checked ? -2 : 0);
+            }
+        });
+
+        // Resetar Vista
+        function resetView() {
+            if (viewer) {
+                viewer.setYaw(0);
+                viewer.setPitch(0);
+                viewer.setHfov(100);
+                document.getElementById('zoomRange').value = 50;
+                document.getElementById('zoomValue').textContent = '50%';
+            }
+        }
+
+        // Limpar
+        function clearImage() {
+            if (viewer) {
+                viewer.destroy();
+                viewer = null;
+            }
+            images = [];
+            renderSlider();
+            initializeExamples();
+        }
+
+        // Scroll do slider
+        function scrollSlider(amount) {
+            const slider = document.getElementById('slider');
+            slider.scrollLeft += amount;
+        }
+
+        // Upload de arquivos
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    images.push({
+                        name: file.name.split('.')[0],
+                        url: event.target.result
+                    });
+                    renderSlider();
+                    if (images.length === 1) {
+                        loadImage(images.length - 1);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // Limpar input
+            e.target.value = '';
+        });
+
+        // Inicializar ao carregar
+        window.addEventListener('load', initializeExamples);
+    </script>
+</body>
+</html>
