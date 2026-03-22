@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador 3D Panorâmico com Slider</title>
+    <title>Meu Site 360° - Visualizador Panorâmico</title>
     <!-- Pannellum CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
     <style>
+        /* ===== ESTILOS GERAIS DO SITE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -15,88 +16,115 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            background: #0f0f1e;
             color: #fff;
-            min-height: 100vh;
-            padding: 20px;
+            scroll-behavior: smooth;
+            line-height: 1.6;
         }
 
-        /* ===== CONTAINER PRINCIPAL ===== */
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* ===== CABEÇALHO ===== */
+        /* ===== CABEÇALHO / NAV ===== */
         header {
-            text-align: center;
-            margin-bottom: 50px;
-            animation: slideDown 0.8s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(34, 34, 34, 0.95);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.3);
         }
 
-        header h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        header p {
-            font-size: 18px;
+        nav a {
+            color: white;
+            margin-left: 25px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: #00bfff;
+        }
+
+        /* ===== SEÇÕES ===== */
+        .hero {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(15, 15, 30, 0.7), rgba(15, 15, 30, 0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 20px;
             color: #b0c4de;
+            max-width: 700px;
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .secao {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
         }
 
-        /* ===== CONTAINER DO VISUALIZADOR ===== */
+        .secao h2 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #00bfff;
+        }
+
+        /* ===== CONTAINER DO VISUALIZADOR 3D ===== */
         .viewer-box {
-            background: linear-gradient(135deg, rgba(30, 60, 114, 0.3) 0%, rgba(42, 82, 152, 0.3) 100%);
-            border: 2px solid rgba(0, 191, 255, 0.3);
+            background: rgba(30, 60, 114, 0.2);
+            border: 1px solid rgba(0, 191, 255, 0.3);
             border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 0 60px rgba(0, 191, 255, 0.1);
+            padding: 30px;
+            margin: 40px auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
-            animation: slideUp 0.8s ease 0.2s both;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ===== VISUALIZADOR ===== */
         #panorama {
             width: 100%;
-            height: 500px;
+            height: 550px;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            cursor: crosshair;
         }
 
-        /* ===== CONTROLES SUPERIORES ===== */
+        /* ===== CONTROLES E FORMULÁRIOS ===== */
         .viewer-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             padding: 15px;
             background: rgba(0, 191, 255, 0.1);
             border-radius: 10px;
@@ -104,530 +132,327 @@
             gap: 15px;
         }
 
-        .control-left {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .control-right {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
         .control-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .control-group label {
-            font-size: 13px;
-            color: #b0c4de;
-            white-space: nowrap;
-        }
+        .control-group label { font-size: 13px; color: #b0c4de; }
 
-        .control-group input[type="range"] {
-            width: 120px;
-            height: 6px;
-            border-radius: 3px;
-            background: #444;
-            outline: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
+        input[type="range"] { width: 120px; cursor: pointer; }
 
-        .control-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 191, 255, 0.4);
-        }
-
-        .control-group input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 5px rgba(0, 191, 255, 0.4);
-        }
-
-        .control-value {
-            background: rgba(0, 191, 255, 0.2);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #00bfff;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .checkbox-custom {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        /* ===== BOTÕES ===== */
-        button {
+        .btn {
             padding: 10px 20px;
             border: none;
             border-radius: 8px;
             font-size: 13px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
-            color: white;
+        .btn-primary { background: #00bfff; color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4); }
+        .btn-success { background: #00d4aa; color: white; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 212, 170, 0.4); }
+        .btn-danger { background: #ff6b6b; color: white; }
+
+        /* ===== SLIDER ===== */
+        .slider-container { margin-top: 30px; text-align: left; }
+        .slider-wrapper { position: relative; overflow: hidden; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; }
+        .slider { display: flex; gap: 15px; overflow-x: auto; padding: 10px 0; scroll-behavior: smooth; }
+        .slide-item { flex: 0 0 130px; height: 130px; border-radius: 10px; cursor: pointer; border: 3px solid transparent; transition: 0.3s; overflow: hidden; }
+        .slide-item.active { border-color: #00bfff; box-shadow: 0 0 15px #00bfff; }
+        .slide-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ===== HOTSPOTS FORM ===== */
+        .hotspots-form-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            text-align: left;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 20px;
+            align-items: flex-end;
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
-        }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 12px; color: #00bfff; font-weight: bold; }
+        .form-group input { padding: 12px; background: rgba(0,0,0,0.5); border: 1px solid #333; border-radius: 8px; color: white; }
+        .form-group input:focus { border-color: #00bfff; outline: none; }
 
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        /* ===== SLIDER DE IMAGENS ===== */
-        .slider-container {
-            position: relative;
-            margin-top: 20px;
-        }
-
-        .slider-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #00bfff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .slider-wrapper {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-        }
-
-        .slider {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 5px;
-        }
-
-        .slider::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .slider::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-        }
-
-        .slider::-webkit-scrollbar-thumb {
-            background: rgba(0, 191, 255, 0.5);
-            border-radius: 3px;
-        }
-
-        .slider::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 191, 255, 0.8);
-        }
-
-        .slide-item {
-            flex: 0 0 120px;
-            height: 120px;
-            border-radius: 10px;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            position: relative;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            text-align: center;
-            padding: 10px;
-            color: #b0c4de;
-        }
-
-        .slide-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.3s ease;
-        }
-
-        .slide-item:hover {
-            transform: scale(1.05);
-            border-color: rgba(0, 191, 255, 0.5);
-        }
-
-        .slide-item.active {
-            border-color: #00bfff;
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
-        }
-
-        .slide-item.active img {
-            filter: brightness(1.2);
-        }
-
-        /* ===== SETAS DO SLIDER ===== */
-        .slider-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
+        /* ===== VOLTAR AO TOPO ===== */
+        #voltarTopo {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #00bfff;
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            padding: 15px;
+            font-size: 20px;
             border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            z-index: 10;
+            transition: 0.3s;
+            display: none;
+            z-index: 2000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .slider-arrow:hover {
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
-        }
+        #voltarTopo:hover { transform: scale(1.1); background: #0099cc; }
 
-        .slider-arrow.left {
-            left: 10px;
-        }
+        .status-msg { margin-top: 15px; padding: 10px; border-radius: 8px; display: none; }
+        .status-success { display: block; background: rgba(0, 212, 170, 0.2); color: #00d4aa; border-left: 4px solid #00d4aa; }
 
-        .slider-arrow.right {
-            right: 10px;
-        }
-
-        /* ===== UPLOAD ===== */
-        .upload-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(0, 191, 255, 0.1);
-            border: 2px dashed #00bfff;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .upload-section h3 {
-            color: #00bfff;
-            margin-bottom: 15px;
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-input-wrapper input[type=file] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-input-label {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #00bfff 0%, #0099cc 100%);
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .file-input-label:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
-        }
-
-        /* ===== RESPONSIVO ===== */
+        /* ===== RESPONSIVIDADE ===== */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 32px;
-            }
-
-            #panorama {
-                height: 300px;
-            }
-
-            .viewer-controls {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .control-left,
-            .control-right {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .slide-item {
-                flex: 0 0 100px;
-                height: 100px;
-            }
-
-            .slider-arrow {
-                width: 35px;
-                height: 35px;
-                font-size: 18px;
-            }
+            .form-grid { grid-template-columns: 1fr; }
+            header { padding: 20px; }
+            .hero h1 { font-size: 36px; }
         }
     </style>
 </head>
-<body>
-    <div class="main-container">
-        <!-- CABEÇALHO -->
-        <header>
-            <h1>🌍 Visualizador 3D Panorâmico</h1>
-            <p>Explore imagens 360° com um simples clique</p>
-        </header>
+<body id="topo">
 
-        <!-- CONTAINER DO VISUALIZADOR -->
+    <!-- MENU DE NAVEGAÇÃO -->
+    <header>
+        <div class="logo">PanoViewer 360°</div>
+        <nav>
+            <a href="#topo">Home</a>
+            <a href="#visualizador">3D Viewer</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#contato">Contato</a>
+        </nav>
+    </header>
+
+    <!-- SEÇÃO HERO -->
+    <section class="hero">
+        <h1>Sua Experiência Imersiva</h1>
+        <p>Explore ambientes incríveis com nosso visualizador 3D panorâmico de alta performance.</p>
+    </section>
+
+    <!-- SEÇÃO DO VISUALIZADOR 3D -->
+    <section id="visualizador" class="secao">
+        <h2>Visualizador Panorâmico</h2>
+        <p style="margin-bottom: 40px; color: #b0c4de;">Navegue pelas imagens abaixo ou adicione seus próprios pontos de interesse interativos.</p>
+
         <div class="viewer-box">
             <!-- CONTROLES -->
             <div class="viewer-controls">
-                <div class="control-left">
-                    <div class="control-group">
-                        <label for="zoomRange">Zoom:</label>
-                        <input type="range" id="zoomRange" min="0" max="100" value="50">
-                        <span class="control-value" id="zoomValue">50%</span>
-                    </div>
-                    <div class="control-group">
-                        <label for="autoRotate">Rotação Automática:</label>
-                        <input type="checkbox" id="autoRotate" class="checkbox-custom">
-                    </div>
+                <div class="control-group">
+                    <label>Zoom:</label>
+                    <input type="range" id="zoomRange" min="0" max="100" value="50">
                 </div>
-                <div class="control-right">
-                    <button class="btn-primary" onclick="resetView()">🔄 Resetar</button>
-                    <button class="btn-secondary" onclick="clearImage()">🗑️ Limpar</button>
+                <div class="control-group">
+                    <label>Giro Automático:</label>
+                    <input type="checkbox" id="autoRotate" style="width: 20px; height: 20px;">
+                </div>
+                <div class="control-group">
+                    <button class="btn btn-primary" onclick="resetView()">Resetar</button>
                 </div>
             </div>
 
-            <!-- VISUALIZADOR -->
+            <!-- O VISUALIZADOR -->
             <div id="panorama"></div>
 
-            <!-- SLIDER DE IMAGENS -->
+            <!-- SLIDER DE GALERIA -->
             <div class="slider-container">
-                <div class="slider-title">📸 Galeria de Imagens</div>
+                <p style="font-weight: bold; margin-bottom: 10px; color: #00bfff;">📸 Galeria</p>
                 <div class="slider-wrapper">
-                    <div class="slider" id="slider">
-                        <!-- Slides serão adicionados dinamicamente -->
-                    </div>
-                    <button class="slider-arrow left" onclick="scrollSlider(-150)">❮</button>
-                    <button class="slider-arrow right" onclick="scrollSlider(150)">❯</button>
+                    <div class="slider" id="slider"></div>
                 </div>
             </div>
 
-            <!-- UPLOAD -->
-            <div class="upload-section">
-                <h3>📤 Adicionar Imagens à Galeria</h3>
-                <div class="file-input-wrapper">
-                    <label for="fileInput" class="file-input-label">
-                        Clique para selecionar imagens
-                    </label>
-                    <input type="file" id="fileInput" accept="image/*" multiple>
+            <!-- FORMULÁRIO DE HOTSPOTS -->
+            <div class="hotspots-form-container">
+                <p style="font-weight: bold; margin-bottom: 15px; color: #00bfff;">🎯 Adicionar Link para Modelo 3D</p>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Título do Ponto</label>
+                        <input type="text" id="hotspotTitle" placeholder="Ex: Ver Quarto 3D">
+                    </div>
+                    <div class="form-group">
+                        <label>Link do Modelo (URL)</label>
+                        <input type="url" id="hotspotLink" placeholder="https://sketchfab.com/...">
+                    </div>
+                    <button class="btn btn-success" id="hotspotBtn" onclick="toggleHotspotMode()">Adicionar Ponto</button>
                 </div>
-                <p style="margin-top: 10px; font-size: 12px; color: #b0c4de;">
-                    Você pode selecionar múltiplas imagens de uma vez
-                </p>
+                <div id="statusMsg" class="status-msg"></div>
+            </div>
+
+            <!-- UPLOAD DE NOVAS IMAGENS -->
+            <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                <label for="fileInput" class="btn btn-primary" style="display: inline-block;">📤 Carregar Nova Foto 360°</label>
+                <input type="file" id="fileInput" style="display: none;" accept="image/*" multiple>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Pannellum JS -->
+    <!-- SEÇÃO SOBRE -->
+    <section id="sobre" class="secao">
+        <h2>Sobre o Projeto</h2>
+        <p>Desenvolvido para proporcionar a melhor visualização de ambientes em 360 graus. Ideal para corretores, arquitetos e entusiastas de tecnologia.</p>
+    </section>
+
+    <!-- SEÇÃO CONTATO -->
+    <section id="contato" class="secao">
+        <h2>Contato</h2>
+        <p>Tem alguma dúvida? Entre em contato conosco pelo e-mail: <br><strong>suporte@panoviewer.com</strong></p>
+    </section>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <button id="voltarTopo">↑</button>
+
+    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-
     <script>
         let viewer = null;
         let images = [];
         let currentIndex = 0;
+        let hotspotMode = false;
+        let hotspots = {};
 
-        // Criar imagem de exemplo
+        // Função para criar imagens de exemplo (gradientes)
         function createExampleImage(text, color1, color2) {
             const canvas = document.createElement('canvas');
-            canvas.width = 2048;
-            canvas.height = 1024;
+            canvas.width = 2048; canvas.height = 1024;
             const ctx = canvas.getContext('2d');
-            
-            // Gradiente
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-            gradient.addColorStop(0, color1);
-            gradient.addColorStop(1, color2);
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Texto
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 80px Arial';
-            ctx.textAlign = 'center';
-            ctx.shadowColor = 'rgba(0,0,0,0.5)';
-            ctx.shadowBlur = 10;
-            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-            
-            return canvas.toDataURL('image/png');
+            const grad = ctx.createLinearGradient(0, 0, 2048, 0);
+            grad.addColorStop(0, color1); grad.addColorStop(1, color2);
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, 2048, 1024);
+            ctx.fillStyle = 'white'; ctx.font = 'bold 80px Arial'; ctx.textAlign = 'center';
+            ctx.fillText(text, 1024, 512);
+            return canvas.toDataURL();
         }
 
-        // Inicializar com imagens de exemplo
-        function initializeExamples() {
+        // Inicialização
+        function init() {
+            // Definição de imagens iniciais (pode ser trocado por arquivos locais como panorama1.jpg)
             images = [
-                { name: 'Gradiente Azul', url: C:\Users\16861\Desktop\site_test\panorama-01 },
-                { name: 'Gradiente Roxo', url: createExampleImage('Roxo', '#667eea', '#764ba2') },
-                { name: 'Gradiente Verde', url: createExampleImage('Verde', '#00b894', '#00cec9') },
-                { name: 'Gradiente Laranja', url: createExampleImage('Laranja', '#ff7675', '#fdcb6e') }
+                { name: 'Ambiente 1', url: createExampleImage('Panorama Azul', '#1e3c72', '#2a5298') },
+                { name: 'Ambiente 2', url: createExampleImage('Panorama Roxo', '#667eea', '#764ba2') },
+                { name: 'Ambiente 3', url: createExampleImage('Panorama Verde', '#00b894', '#00cec9') }
             ];
+            images.forEach((_, i) => hotspots[i] = []);
             renderSlider();
             loadImage(0);
         }
 
-        // Renderizar slider
         function renderSlider() {
             const slider = document.getElementById('slider');
             slider.innerHTML = '';
-            
-            images.forEach((img, index) => {
-                const slide = document.createElement('div');
-                slide.className = `slide-item ${index === currentIndex ? 'active' : ''}`;
-                slide.innerHTML = `<img src="${img.url}" alt="${img.name}">`;
-                slide.onclick = () => loadImage(index);
-                slider.appendChild(slide);
+            images.forEach((img, i) => {
+                const item = document.createElement('div');
+                item.className = `slide-item ${i === currentIndex ? 'active' : ''}`;
+                item.innerHTML = `<img src="${img.url}">`;
+                item.onclick = () => loadImage(i);
+                slider.appendChild(item);
             });
         }
 
-        // Carregar imagem
         function loadImage(index) {
-            if (index < 0 || index >= images.length) return;
-            
             currentIndex = index;
-            
-            if (viewer) {
-                viewer.destroy();
-            }
-
+            if (viewer) viewer.destroy();
             viewer = pannellum.viewer('panorama', {
                 type: 'equirectangular',
                 panorama: images[index].url,
                 autoLoad: true,
-                showControls: true,
-                mouseZoom: true,
-                doubleClickZoom: true,
-                autoRotate: document.getElementById('autoRotate').checked ? -2 : 0,
-                autoRotateInactivityDelay: 3000,
-                yaw: 0,
-                pitch: 0,
-                hfov: 100,
-                minHfov: 30,
-                maxHfov: 120
+                yaw: 0, pitch: 0, hfov: 100
             });
-
-            // Atualizar slider
+            // Carregar hotspots salvos
+            hotspots[index].forEach(hs => {
+                viewer.addHotSpot({ pitch: hs.pitch, yaw: hs.yaw, type: 'info', text: hs.text, URL: hs.url });
+            });
             renderSlider();
         }
 
-        // Controle de Zoom
-        document.getElementById('zoomRange').addEventListener('input', function(e) {
-            if (viewer) {
-                const zoomValue = parseInt(e.target.value);
-                const hfov = 30 + (120 - 30) * (100 - zoomValue) / 100;
-                viewer.setHfov(hfov);
-                document.getElementById('zoomValue').textContent = zoomValue + '%';
-            }
-        });
-
-        // Rotação Automática
-        document.getElementById('autoRotate').addEventListener('change', function(e) {
-            if (viewer) {
-                viewer.setAutoRotate(e.target.checked ? -2 : 0);
-            }
-        });
-
-        // Resetar Vista
-        function resetView() {
-            if (viewer) {
-                viewer.setYaw(0);
-                viewer.setPitch(0);
-                viewer.setHfov(100);
-                document.getElementById('zoomRange').value = 50;
-                document.getElementById('zoomValue').textContent = '50%';
-            }
-        }
-
-        // Limpar
-        function clearImage() {
-            if (viewer) {
-                viewer.destroy();
-                viewer = null;
-            }
-            images = [];
-            renderSlider();
-            initializeExamples();
-        }
-
-        // Scroll do slider
-        function scrollSlider(amount) {
-            const slider = document.getElementById('slider');
-            slider.scrollLeft += amount;
-        }
-
-        // Upload de arquivos
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const files = Array.from(e.target.files);
+        // Lógica de Hotspots
+        function toggleHotspotMode() {
+            const title = document.getElementById('hotspotTitle').value;
+            const link = document.getElementById('hotspotLink').value;
+            if (!title || !link) { alert("Preencha o título e o link!"); return; }
             
-            files.forEach(file => {
+            hotspotMode = !hotspotMode;
+            const btn = document.getElementById('hotspotBtn');
+            if (hotspotMode) {
+                btn.textContent = "Clique na Imagem...";
+                btn.className = "btn btn-danger";
+                document.getElementById('statusMsg').textContent = "🎯 Modo de Seleção Ativo: Clique em um local da foto 360°";
+                document.getElementById('statusMsg').className = "status-msg status-success";
+            } else {
+                resetHotspotBtn();
+            }
+        }
+
+        function resetHotspotBtn() {
+            const btn = document.getElementById('hotspotBtn');
+            btn.textContent = "Adicionar Ponto";
+            btn.className = "btn btn-success";
+            document.getElementById('statusMsg').style.display = "none";
+            hotspotMode = false;
+        }
+
+        document.getElementById('panorama').addEventListener('click', function(e) {
+            if (!hotspotMode || !viewer) return;
+            const coords = viewer.mouseEventToCoords(e);
+            const pitch = coords[0];
+            const yaw = coords[1];
+            const title = document.getElementById('hotspotTitle').value;
+            const link = document.getElementById('hotspotLink').value;
+
+            viewer.addHotSpot({ pitch, yaw, type: 'info', text: title, URL: link });
+            hotspots[currentIndex].push({ pitch, yaw, text: title, url: link });
+            
+            document.getElementById('hotspotTitle').value = '';
+            document.getElementById('hotspotLink').value = '';
+            resetHotspotBtn();
+            alert("Ponto adicionado com sucesso!");
+        });
+
+        // Controles de visualização
+        document.getElementById('zoomRange').oninput = (e) => {
+            const hfov = 120 - (e.target.value * 0.9);
+            viewer.setHfov(hfov);
+        };
+        document.getElementById('autoRotate').onchange = (e) => {
+            viewer.setAutoRotate(e.target.checked ? -2 : 0);
+        };
+        function resetView() { viewer.setPitch(0); viewer.setYaw(0); viewer.setHfov(100); }
+
+        // Botão Voltar ao Topo
+        const btnTopo = document.getElementById("voltarTopo");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btnTopo.style.display = "block";
+            } else {
+                btnTopo.style.display = "none";
+            }
+        };
+        btnTopo.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Upload
+        document.getElementById('fileInput').onchange = (e) => {
+            Array.from(e.target.files).forEach(file => {
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    images.push({
-                        name: file.name.split('.')[0],
-                        url: event.target.result
-                    });
+                reader.onload = (ev) => {
+                    const newIdx = images.length;
+                    images.push({ name: file.name, url: ev.target.result });
+                    hotspots[newIdx] = [];
                     renderSlider();
-                    if (images.length === 1) {
-                        loadImage(images.length - 1);
-                    }
+                    loadImage(newIdx);
                 };
                 reader.readAsDataURL(file);
             });
+        };
 
-            // Limpar input
-            e.target.value = '';
-        });
-
-        // Inicializar ao carregar
-        window.addEventListener('load', initializeExamples);
+        window.onload = init;
     </script>
 </body>
 </html>
