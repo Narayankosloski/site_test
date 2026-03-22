@@ -12,8 +12,8 @@
 
 body {
     font-family: 'Segoe UI', sans-serif;
-    background: radial-gradient(circle at top, #1a0f0a, #0b0604);
-    color: #f5e6c8;
+    background: #ffffff;
+    color: #111;
 }
 
 /* HEADER */
@@ -21,60 +21,70 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 20px 50px;
-    background: linear-gradient(90deg, #2c140d, #1a0f0a);
-    border-bottom: 2px solid #c89b3c;
+    background: #fff;
+    border-bottom: 2px solid #000;
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #c89b3c;
-}
+.logo { font-size: 24px; font-weight: bold; }
 
 nav a {
-    color: #f5e6c8;
+    color: #000;
     margin-left: 25px;
     text-decoration: none;
-    transition: 0.3s;
 }
-
-nav a:hover { color: #e63946; }
 
 /* HERO */
 .hero {
-    height: 40vh;
+    height: 30vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-}
-
-.hero h1 {
-    font-size: 42px;
-    color: #c89b3c;
-    text-shadow: 0 0 20px rgba(200,155,60,0.5);
+    border-bottom: 2px solid #000;
 }
 
 /* SEÇÃO */
 .secao {
-    padding: 50px;
+    padding: 60px;
     max-width: 1200px;
     margin: auto;
 }
 
-.secao h2 {
-    text-align: center;
-    color: #c89b3c;
-    margin-bottom: 20px;
+/* EXPOSIÇÕES */
+.exposicao {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 60px;
+    align-items: center;
+    border: 3px solid #000;
+    padding: 30px;
+    cursor: pointer;
+    transition: 0.3s;
 }
+
+/* HOVER ZOOM */
+.exposicao img {
+    width: 500px;
+    height: 320px;
+    object-fit: cover;
+    border: 3px solid #000;
+    transition: transform 0.4s ease;
+}
+
+.exposicao:hover img {
+    transform: scale(1.08);
+}
+
+.exposicao:hover {
+    background: #f5f5f5;
+}
+
+.exposicao-texto { flex: 1; }
 
 /* PANORAMA */
 #panorama {
     width: 100%;
     height: 500px;
-    border-radius: 15px;
-    border: 2px solid #c89b3c;
-    box-shadow: 0 0 30px rgba(200,155,60,0.3);
+    border: 2px solid #000;
 }
 
 /* BOTÕES */
@@ -83,55 +93,26 @@ nav a:hover { color: #e63946; }
     gap: 12px;
     justify-content: center;
     margin-bottom: 20px;
-    flex-wrap: wrap;
 }
 
 .scene-btn {
     padding: 10px 18px;
-    background: linear-gradient(135deg, #c89b3c, #8b5e1a);
-    border: none;
-    color: #000;
-    cursor: pointer;
+    background: #000;
+    color: #fff;
     border-radius: 20px;
-    font-weight: bold;
-    transition: 0.3s;
+    cursor: pointer;
 }
 
-.scene-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(200,155,60,0.6);
-}
-
-/* BOTÃO TOPO (MAIOR) */
+/* BOTÃO TOPO */
 #voltarTopo {
     position: fixed;
     bottom: 25px;
     right: 25px;
-    background: #c89b3c;
-    border: none;
+    background: #000;
     padding: 18px;
-    font-size: 20px;
     border-radius: 50%;
+    color: #fff;
     cursor: pointer;
-    color: #000;
-    font-weight: bold;
-    box-shadow: 0 0 15px rgba(200,155,60,0.6);
-    transition: 0.3s;
-}
-
-#voltarTopo:hover {
-    transform: scale(1.15);
-    background: #e63946;
-}
-
-/* EFEITO DE FUNDO */
-body::before {
-    content: "";
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(200,155,60,0.05), transparent 70%);
-    pointer-events: none;
 }
 </style>
 </head>
@@ -139,12 +120,34 @@ body::before {
 <body id="topo">
 
 <header>
-    <div class="logo">🌍 Panorama Test</div>
+    <div class="logo">Panorama Test</div>
     <nav>
-        <a href="#topo">Início</a>
+        <a href="#expo">Exposição</a>
         <a href="#viewer">Explorar</a>
     </nav>
 </header>
+
+<!-- EXPOSIÇÃO -->
+<section id="expo" class="secao">
+    <h2>Exposição</h2>
+
+    <div class="exposicao" onclick="irParaCena(0, 0, 45)">
+        <img src="https://picsum.photos/600/400">
+        <div class="exposicao-texto">
+            <h3>Obra 1</h3>
+            <p>Clique para visualizar no panorama.</p>
+        </div>
+    </div>
+
+    <div class="exposicao" onclick="irParaCena(1, 10, 90)">
+        <img src="https://picsum.photos/601/400">
+        <div class="exposicao-texto">
+            <h3>Obra 2</h3>
+            <p>Essa obra está em outro ambiente.</p>
+        </div>
+    </div>
+
+</section>
 
 <section class="hero">
     <h1>Museu de Exposições</h1>
@@ -152,9 +155,7 @@ body::before {
 
 <section id="viewer" class="secao">
     <h2>Explorar Ambientes</h2>
-
     <div class="scene-selector" id="sceneSelector"></div>
-
     <div id="panorama"></div>
 </section>
 
@@ -199,6 +200,16 @@ function init() {
     });
 
     loadScene(0);
+}
+
+/* NOVA FUNÇÃO: IR PARA OBRA */
+function irParaCena(index, pitch, yaw) {
+    loadScene(index);
+
+    setTimeout(() => {
+        viewer.lookAt(pitch, yaw, 80);
+        window.location.href = "#viewer";
+    }, 800);
 }
 
 function loadScene(index) {
