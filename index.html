@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panorama Test</title>
+<title>Panorama Test</title> 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 
@@ -55,19 +55,30 @@ nav a {
     gap: 40px;
     margin-bottom: 60px;
     align-items: center;
-    border: 3px solid #000;
     padding: 30px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-/* HOVER ZOOM */
+.exposicao:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.exposicao-texto {
+    flex: 1;
+}
+
+.exposicao:nth-child(even) .exposicao-texto {
+    text-align: right;
+}
+
 .exposicao img {
     width: 500px;
     height: 320px;
     object-fit: cover;
     border: 3px solid #000;
     transition: transform 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 .exposicao:hover img {
@@ -77,8 +88,6 @@ nav a {
 .exposicao:hover {
     background: #f5f5f5;
 }
-
-.exposicao-texto { flex: 1; }
 
 /* PANORAMA */
 #panorama {
@@ -114,6 +123,73 @@ nav a {
     color: #fff;
     cursor: pointer;
 }
+
+/* FOOTER */
+.footer {
+    border-top: 2px solid #000;
+    margin-top: 60px;
+    padding: 40px 20px 20px;
+    background: #fff;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-col h3,
+.footer-col h4 {
+    margin-bottom: 15px;
+}
+
+.footer-col a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #000;
+    padding-top: 10px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .exposicao {
+        flex-direction: column !important;
+    }
+
+    .exposicao-texto {
+        text-align: left !important;
+    }
+
+    #panorama {
+        height: 300px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+}
 </style>
 </head>
 
@@ -127,23 +203,40 @@ nav a {
     </nav>
 </header>
 
-<!-- EXPOSIÇÃO -->
 <section id="expo" class="secao">
     <h2>Exposição</h2>
 
+    <!-- OBRA 1 COM TEXTO REAL -->
     <div class="exposicao" onclick="irParaCena(0, 0, 45)">
-        <img src="https://picsum.photos/600/400">
+        <img src="https://i.postimg.cc/zvtkZDjK/Scanned-20260322-205014.png">
         <div class="exposicao-texto">
-            <h3>Obra 1</h3>
-            <p>Clique para visualizar no panorama.</p>
+            <h3>Retrato Iya Maria Divina</h3>
+            <p>
+            Retrato Iya Maria Divina. Ile Ase Omo L’Oya Tope, Curitiba-PR. 2019.<br><br>
+             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2021.
+             2019.
+             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2020.<br><br>
+             Casa Rosa, Curitiba-PR. 2021.
+             2021.
+             Casa Rosa, Curitiba-PR, 2021.<br><br>
+             2021.
+             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2022.
+             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2019.
+             Retrato Baba Gilson Ifakolade. Ile Mole, Almirante Tamandaré-PR, 2019.
+             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2021.
+            </p>
         </div>
     </div>
 
     <div class="exposicao" onclick="irParaCena(1, 10, 90)">
-        <img src="https://picsum.photos/601/400">
+        <img src="https://i.postimg.cc/rpGFwQHz/obra021.jpg/601/400">
         <div class="exposicao-texto">
             <h3>Obra 2</h3>
-            <p>Essa obra está em outro ambiente.</p>
+            <p>
+Discutir a patrimonialização pela perspectiva dos povos de terreiro requer uma investigação não apenas das questões históricas, antropológicas, arqueológicas...<br><br>
+
+Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escravizados criaram condições para sobrevivência de suas culturas, e foi nele e sobre ele que inscreveram, guardaram e performaram o que hoje chamamos de culturas brasileiras de matriz africana.
+</p>
         </div>
     </div>
 
@@ -161,6 +254,18 @@ nav a {
 
 <button id="voltarTopo">↑</button>
 
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>Panorama Test</h3>
+            <p>Museu virtual interativo com experiências em 360°.</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2026 Panorama Test
+    </div>
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script>
@@ -168,77 +273,34 @@ const scenes = [
     {
         name: "Espaço 1",
         image: "https://i.postimg.cc/rwfXz5wh/panorama-01.jpg",
-        hotspots: [
-            { title: "Modelo 3D", link: "https://sketchfab.com", pitch: 0, yaw: 45 }
-        ]
+        hotspots: []
     },
     {
         name: "Espaço 2",
         image: "https://i.postimg.cc/SsTJrndH/panorama-02.jpg",
-        hotspots: [
-            { title: "Explorar", link: "https://exemplo.com", pitch: 10, yaw: 90 }
-        ]
-    },
-    {
-        name: "Espaço 3",
-        image: "https://i.postimg.cc/pLfrSGkY/panorama-03.jpg",
         hotspots: []
     }
 ];
 
-let viewer = null;
+let viewer;
 
 function init() {
-    const selector = document.getElementById('sceneSelector');
-
-    scenes.forEach((scene, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'scene-btn';
-        btn.textContent = scene.name;
-        btn.onclick = () => loadScene(i);
-        selector.appendChild(btn);
-    });
-
-    loadScene(0);
-}
-
-/* NOVA FUNÇÃO: IR PARA OBRA */
-function irParaCena(index, pitch, yaw) {
-    loadScene(index);
-
-    setTimeout(() => {
-        viewer.lookAt(pitch, yaw, 80);
-        window.location.href = "#viewer";
-    }, 800);
-}
-
-function loadScene(index) {
-    const scene = scenes[index];
-
-    if (viewer) viewer.destroy();
-
     viewer = pannellum.viewer('panorama', {
         type: 'equirectangular',
-        panorama: scene.image,
+        panorama: scenes[0].image,
+        autoLoad: true
+    });
+}
+
+function irParaCena(i, p, y) {
+    viewer.loadScene ? viewer.loadScene(i) : viewer = pannellum.viewer('panorama', {
+        type: 'equirectangular',
+        panorama: scenes[i].image,
         autoLoad: true
     });
 
-    viewer.on('load', () => {
-        scene.hotspots.forEach(hs => {
-            viewer.addHotSpot({
-                pitch: hs.pitch,
-                yaw: hs.yaw,
-                type: 'info',
-                text: hs.title,
-                URL: hs.link
-            });
-        });
-    });
+    setTimeout(() => viewer.lookAt(p, y, 80), 500);
 }
-
-document.getElementById('voltarTopo').onclick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
 
 window.onload = init;
 </script>
