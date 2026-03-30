@@ -16,6 +16,30 @@ body {
     color: #111;
 }
 
+/* ===== LOADING ===== */
+#loading {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-logo {
+    width: 120px;
+    animation: spin3D 2s linear infinite;
+}
+
+@keyframes spin3D {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+}
+
+/* ===== SEU CSS ORIGINAL ===== */
+
 header {
     display: flex;
     justify-content: space-between;
@@ -104,6 +128,7 @@ nav a {
     cursor: pointer;
 }
 
+/* BOTÃO ESCONDIDO */
 #voltarTopo {
     position: fixed;
     bottom: 25px;
@@ -113,6 +138,7 @@ nav a {
     border-radius: 50%;
     color: #fff;
     cursor: pointer;
+    display: none;
 }
 
 .footer {
@@ -172,8 +198,13 @@ nav a {
 
 <body id="topo">
 
+<!-- LOADING -->
+<div id="loading">
+    <img class="loading-logo" src="https://cdn-icons-png.flaticon.com/512/854/854878.png">
+</div>
+
 <header>
-    <div class="logo">Panorama Test</div>
+    <div class="logo">Panorama</div>
     <nav>
         <a href="#expo">Exposição</a>
         <a href="#viewer">Explorar</a>
@@ -208,14 +239,13 @@ nav a {
         <img src="https://i.postimg.cc/rpGFwQHz/obra021.jpg/601/400">
         <div class="exposicao-texto">
             <h3>Obra 2</h3>
-           <p>
+            <p>
 Discutir a patrimonialização pela perspectiva dos povos de terreiro requer uma investigação não apenas das questões históricas, antropológicas, arqueológicas...<br><br>
 
 Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escravizados criaram condições para sobrevivência de suas culturas, e foi nele e sobre ele que inscreveram, guardaram e performaram o que hoje chamamos de culturas brasileiras de matriz africana.
 </p>
         </div>
     </div>
-
 </section>
 
 <section class="hero">
@@ -227,7 +257,7 @@ Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escraviza
     <div id="panorama"></div>
 </section>
 
-<button id="voltarTopo">↑</button>
+<button id="voltarTopo" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
 
 <footer class="footer">
     <div class="footer-container">
@@ -235,9 +265,6 @@ Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escraviza
             <h3>Panorama Test</h3>
             <p>Museu virtual interativo com experiências em 360°.</p>
         </div>
-    </div>
-    <div class="footer-bottom">
-        © 2026 Panorama Test
     </div>
 </footer>
 
@@ -247,15 +274,16 @@ Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escraviza
 const scenes = [
     {
         name: "Espaço 1",
-        image: "https://i.postimg.cc/rwfXz5wh/panorama-01.jpg",
+        image: "https://i.postimg.cc/xTjpvM9v/casa.jpg",
         hotspots: [
             { title: "Abrir Sketchfab", link: "https://sketchfab.com", pitch: 0, yaw: 45 },
-            { title: "Ir para Espaço 2", sceneIndex: 1, pitch: 0, yaw: -60 }
+            { title: "quadro", link: "https://sketchfab.com", pitch: 0, yaw: 120 },
+            { title: "Ir para Espaço 2", sceneIndex: 1, pitch: 0, yaw: -150 }
         ]
     },
     {
         name: "Espaço 2",
-        image: "https://i.postimg.cc/SsTJrndH/panorama-02.jpg",
+        image: "https://i.postimg.cc/wMSj5HS1/sala.jpg",
         hotspots: [
             { title: "Abrir Sketchfab", link: "https://sketchfab.com", pitch: 45, yaw: 45 },
             { title: "Voltar Espaço 1", sceneIndex: 0, pitch: 0, yaw: 120 }
@@ -273,7 +301,7 @@ function criarHotspots(hotspots) {
         text: h.title,
         clickHandlerFunc: function () {
             if (h.link) window.open(h.link, "_blank");
-            if (h.sceneIndex !== undefined) carregarCena(h.sceneIndex);
+            if (h.sceneIndex !== undefined) carregarCena(h.sceneIndex); // 🔥 CORREÇÃO AQUI
         }
     }));
 }
@@ -291,12 +319,16 @@ function carregarCena(index) {
 
 function init() {
     carregarCena(0);
+
+    setTimeout(() => {
+        document.getElementById("loading").style.display = "none";
+    }, 1200);
 }
 
-function irParaCena(i, p, y) {
-    carregarCena(i);
-    setTimeout(() => viewer.lookAt(p, y, 80), 500);
-}
+window.onscroll = function() {
+    const btn = document.getElementById("voltarTopo");
+    btn.style.display = document.documentElement.scrollTop > 200 ? "block" : "none";
+};
 
 window.onload = init;
 </script>
