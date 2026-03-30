@@ -16,7 +16,6 @@ body {
     color: #111;
 }
 
-/* HEADER */
 header {
     display: flex;
     justify-content: space-between;
@@ -33,7 +32,6 @@ nav a {
     text-decoration: none;
 }
 
-/* HERO */
 .hero {
     height: 30vh;
     display: flex;
@@ -42,14 +40,12 @@ nav a {
     border-bottom: 2px solid #000;
 }
 
-/* SEÇÃO */
 .secao {
     padding: 60px;
     max-width: 1200px;
     margin: auto;
 }
 
-/* EXPOSIÇÕES */
 .exposicao {
     display: flex;
     gap: 40px;
@@ -64,9 +60,7 @@ nav a {
     flex-direction: row-reverse;
 }
 
-.exposicao-texto {
-    flex: 1;
-}
+.exposicao-texto { flex: 1; }
 
 .exposicao:nth-child(even) .exposicao-texto {
     text-align: right;
@@ -89,14 +83,12 @@ nav a {
     background: #f5f5f5;
 }
 
-/* PANORAMA */
 #panorama {
     width: 100%;
     height: 500px;
     border: 2px solid #000;
 }
 
-/* BOTÕES */
 .scene-selector {
     display: flex;
     gap: 12px;
@@ -112,7 +104,6 @@ nav a {
     cursor: pointer;
 }
 
-/* BOTÃO TOPO */
 #voltarTopo {
     position: fixed;
     bottom: 25px;
@@ -124,7 +115,6 @@ nav a {
     cursor: pointer;
 }
 
-/* FOOTER */
 .footer {
     border-top: 2px solid #000;
     margin-top: 60px;
@@ -146,18 +136,6 @@ nav a {
     min-width: 200px;
 }
 
-.footer-col h3,
-.footer-col h4 {
-    margin-bottom: 15px;
-}
-
-.footer-col a {
-    display: block;
-    color: #000;
-    text-decoration: none;
-    margin-bottom: 8px;
-}
-
 .footer-bottom {
     text-align: center;
     margin-top: 30px;
@@ -165,7 +143,6 @@ nav a {
     padding-top: 10px;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
 
     header {
@@ -206,7 +183,6 @@ nav a {
 <section id="expo" class="secao">
     <h2>Exposição</h2>
 
-    <!-- OBRA 1 COM TEXTO REAL -->
     <div class="exposicao" onclick="irParaCena(0, 0, 45)">
         <img src="https://i.postimg.cc/zvtkZDjK/Scanned-20260322-205014.png">
         <div class="exposicao-texto">
@@ -232,7 +208,7 @@ nav a {
         <img src="https://i.postimg.cc/rpGFwQHz/obra021.jpg/601/400">
         <div class="exposicao-texto">
             <h3>Obra 2</h3>
-            <p>
+           <p>
 Discutir a patrimonialização pela perspectiva dos povos de terreiro requer uma investigação não apenas das questões históricas, antropológicas, arqueológicas...<br><br>
 
 Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escravizados criaram condições para sobrevivência de suas culturas, e foi nele e sobre ele que inscreveram, guardaram e performaram o que hoje chamamos de culturas brasileiras de matriz africana.
@@ -248,7 +224,6 @@ Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escraviza
 
 <section id="viewer" class="secao">
     <h2>Explorar Ambientes</h2>
-    <div class="scene-selector" id="sceneSelector"></div>
     <div id="panorama"></div>
 </section>
 
@@ -274,35 +249,52 @@ const scenes = [
         name: "Espaço 1",
         image: "https://i.postimg.cc/rwfXz5wh/panorama-01.jpg",
         hotspots: [
-	{ title: "Modelo 3D", link: "https://sketchfab.com", pitch: 0, yaw: 45 }
-]
+            { title: "Abrir Sketchfab", link: "https://sketchfab.com", pitch: 0, yaw: 45 },
+            { title: "Ir para Espaço 2", sceneIndex: 1, pitch: 0, yaw: -60 }
+        ]
     },
     {
         name: "Espaço 2",
         image: "https://i.postimg.cc/SsTJrndH/panorama-02.jpg",
         hotspots: [
-	{ title: "Modelo 3D", link: "https://sketchfab.com", pitch: 45, yaw: 45 }
-]
+            { title: "Abrir Sketchfab", link: "https://sketchfab.com", pitch: 45, yaw: 45 },
+            { title: "Voltar Espaço 1", sceneIndex: 0, pitch: 0, yaw: 120 }
+        ]
     }
 ];
 
 let viewer;
 
-function init() {
+function criarHotspots(hotspots) {
+    return hotspots.map(h => ({
+        pitch: h.pitch,
+        yaw: h.yaw,
+        type: "info",
+        text: h.title,
+        clickHandlerFunc: function () {
+            if (h.link) window.open(h.link, "_blank");
+            if (h.sceneIndex !== undefined) carregarCena(h.sceneIndex);
+        }
+    }));
+}
+
+function carregarCena(index) {
+    if (viewer) viewer.destroy();
+
     viewer = pannellum.viewer('panorama', {
         type: 'equirectangular',
-        panorama: scenes[0].image,
-        autoLoad: true
+        panorama: scenes[index].image,
+        autoLoad: true,
+        hotSpots: criarHotspots(scenes[index].hotspots)
     });
 }
 
-function irParaCena(i, p, y) {
-    viewer.loadScene ? viewer.loadScene(i) : viewer = pannellum.viewer('panorama', {
-        type: 'equirectangular',
-        panorama: scenes[i].image,
-        autoLoad: true
-    });
+function init() {
+    carregarCena(0);
+}
 
+function irParaCena(i, p, y) {
+    carregarCena(i);
     setTimeout(() => viewer.lookAt(p, y, 80), 500);
 }
 
