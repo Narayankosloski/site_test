@@ -23,8 +23,37 @@ frame-ancestors 'none';
 upgrade-insecure-requests;
 ">
 
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<meta http-equiv="Permissions-Policy"
+content="
+camera=(),
+microphone=(),
+geolocation=(),
+interest-cohort=(),
+payment=(),
+usb=(),
+fullscreen=(self)
+">
+
+<meta http-equiv="X-Frame-Options" content="DENY">
+
 <meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
 <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
+
+<link
+rel="preconnect"
+href="https://cdn.jsdelivr.net"
+crossorigin
+>
+
+<link
+rel="preconnect"
+href="https://cdnjs.cloudflare.com"
+crossorigin
+>
 
 <link
 rel="stylesheet"
@@ -49,6 +78,7 @@ body{
     color:#111827;
     line-height:1.6;
     padding:20px;
+    user-select:none;
 }
 
 .site-container{
@@ -395,6 +425,10 @@ nav a:hover{
     class="loading-logo"
     src="https://cdn-icons-png.flaticon.com/512/854/854878.png"
     alt="Loading"
+    loading="lazy"
+    decoding="async"
+    draggable="false"
+    referrerpolicy="no-referrer"
     >
 </div>
 
@@ -457,6 +491,9 @@ nav a:hover{
 
         <img
         loading="lazy"
+        decoding="async"
+        draggable="false"
+        referrerpolicy="no-referrer"
         src="https://i.postimg.cc/rpGFwQHz/obra021.jpg"
         alt="Obra 2"
         >
@@ -553,13 +590,52 @@ nav a:hover{
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"
+defer
+referrerpolicy="no-referrer"
+></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+defer
+referrerpolicy="no-referrer"
+></script>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"
+defer
+referrerpolicy="no-referrer"
+></script>
 
 <script>
+
+document.addEventListener("contextmenu", e => {
+    e.preventDefault();
+});
+
+document.addEventListener("dragstart", e => {
+    e.preventDefault();
+});
+
+document.addEventListener("keydown", e => {
+
+    if(
+        e.key === "F12" ||
+        (
+            e.ctrlKey &&
+            e.shiftKey &&
+            ["I","J","C"].includes(e.key)
+        ) ||
+        (
+            e.ctrlKey &&
+            e.key === "U"
+        )
+    ){
+        e.preventDefault();
+    }
+
+});
 
 const scenes = [
 
@@ -592,6 +668,7 @@ const scenes = [
 ];
 
 let viewer;
+let iniciado = false;
 
 function criarHotspots(hotspots){
 
@@ -611,7 +688,13 @@ function criarHotspots(hotspots){
 function carregarCena(index){
 
     if(viewer){
-        viewer.destroy();
+
+        try{
+            viewer.destroy();
+        }catch(e){
+            console.warn(e);
+        }
+
     }
 
     viewer = pannellum.viewer('panorama',{
@@ -687,7 +770,9 @@ function criarLivro3D(){
     const renderer =
     new THREE.WebGLRenderer({
         antialias:true,
-        alpha:true
+        alpha:true,
+        powerPreference:"high-performance",
+        preserveDrawingBuffer:false
     });
 
     renderer.setPixelRatio(
@@ -726,19 +811,31 @@ function criarLivro3D(){
         "anonymous"
     );
 
-    const lateral =
-    loader.load(
-        "https://i.postimg.cc/JzTX5Zn9/paginas.jpg"
+    const lateral = loader.load(
+        "https://i.postimg.cc/JzTX5Zn9/paginas.jpg",
+        undefined,
+        undefined,
+        () => {
+            console.error("Erro ao carregar textura lateral");
+        }
     );
 
-    const capa =
-    loader.load(
-        "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg"
+    const capa = loader.load(
+        "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg",
+        undefined,
+        undefined,
+        () => {
+            console.error("Erro ao carregar capa");
+        }
     );
 
-    const contracapa =
-    loader.load(
-        "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg"
+    const contracapa = loader.load(
+        "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg",
+        undefined,
+        undefined,
+        () => {
+            console.error("Erro ao carregar contracapa");
+        }
     );
 
     const material = [
@@ -791,9 +888,34 @@ function criarLivro3D(){
 
 function init(){
 
+    if(iniciado) return;
+
+    iniciado = true;
+
     carregarCena(0);
 
-    criarLivro3D();
+    if(!window.WebGLRenderingContext){
+
+        document.getElementById(
+            "book3d"
+        ).innerHTML = `
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                height:100%;
+                font-size:18px;
+                color:#6b7280;
+            ">
+                WebGL não suportado
+            </div>
+        `;
+
+    }else{
+
+        criarLivro3D();
+
+    }
 
     setTimeout(() => {
 
