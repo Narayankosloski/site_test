@@ -1,315 +1,929 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panorama Test</title> 
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+<title>Museu de Arte</title>
+
+<meta http-equiv="Content-Security-Policy"
+content="
+default-src 'self' https: data: blob:;
+img-src * data: blob:;
+script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
+style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+font-src 'self' https: data:;
+">
+
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
+/>
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #eaeaea;
-    color: #111;
-    padding: 20px;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.site-container {
-    max-width: 1400px;
-    margin: auto;
-    background: #fff;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    border: 2px solid #000;
+html{
+    scroll-behavior:smooth;
 }
 
-#loading {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#f3f4f6;
+    color:#111827;
+    line-height:1.6;
+    padding:20px;
 }
 
-.loading-logo {
-    width: 120px;
-    animation: spin3D 2s linear infinite;
+/* CONTAINER */
+
+.site-container{
+    max-width:1400px;
+    margin:auto;
+    background:#fff;
+    border-radius:30px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,0.08);
+    border:1px solid #ececec;
 }
 
-@keyframes spin3D {
-    0% { transform: rotateY(0deg); }
-    100% { transform: rotateY(360deg); }
+/* LOADING */
+
+#loading{
+    position:fixed;
+    inset:0;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+    transition:0.4s;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 50px;
-    background: #fff;
-    border-bottom: 2px solid #000;
+.loading-logo{
+    width:90px;
+    animation:pulse 1.6s ease infinite;
 }
 
-.logo { font-size: 24px; font-weight: bold; }
+@keyframes pulse{
 
-nav a {
-    color: #000;
-    margin-left: 25px;
-    text-decoration: none;
+    0%,100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    50%{
+        transform:scale(1.1);
+        opacity:0.6;
+    }
 }
 
-.hero {
-    height: 30vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 2px solid #000;
+/* HEADER */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:999;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:24px 40px;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid #ececec;
 }
 
-.secao {
-    padding: 60px;
-    max-width: 1200px;
-    margin: auto;
+.logo{
+    font-size:24px;
+    font-weight:700;
+    letter-spacing:-1px;
+    color:#111827;
 }
 
-/* ===== AJUSTE DAS OBRAS ===== */
-.exposicao {
-    display: flex;
-    gap: 40px;
-    margin-bottom: 60px;
-    align-items: center;
-    padding: 30px;
-    cursor: pointer;
-    transition: 0.3s;
-    flex-wrap: wrap;
+nav{
+    display:flex;
+    align-items:center;
+    gap:25px;
 }
 
-.exposicao:nth-child(even) {
-    flex-direction: row-reverse;
+nav a{
+    text-decoration:none;
+    color:#4b5563;
+    font-weight:500;
+    transition:0.3s;
 }
 
-.exposicao-texto { 
-    flex: 1 1 300px;
+nav a:hover{
+    color:#000;
 }
 
-.exposicao:nth-child(even) .exposicao-texto {
-    text-align: right;
+/* HERO */
+
+.hero{
+    min-height:45vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background:
+    linear-gradient(
+        to bottom,
+        #ffffff,
+        #f8fafc
+    );
+    border-bottom:1px solid #ececec;
+    padding:40px;
 }
 
-/* 🔥 AJUSTE AQUI (CENTRALIZAÇÃO) */
+.hero-content{
+    max-width:800px;
+}
+
+.hero h1{
+    font-size:60px;
+    letter-spacing:-3px;
+    margin-bottom:20px;
+    color:#111827;
+}
+
+.hero p{
+    font-size:18px;
+    color:#6b7280;
+}
+
+/* SEÇÕES */
+
+.secao{
+    padding:80px 50px;
+}
+
+.secao h2{
+    font-size:42px;
+    margin-bottom:50px;
+    letter-spacing:-2px;
+    color:#111827;
+}
+
+/* EXPOSIÇÕES */
+
+.exposicao{
+    display:flex;
+    gap:40px;
+    align-items:center;
+    margin-bottom:45px;
+    padding:30px;
+    border-radius:28px;
+    background:#fafafa;
+    border:1px solid #ececec;
+    transition:0.35s;
+    flex-wrap:wrap;
+}
+
+.exposicao:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 40px rgba(0,0,0,0.08);
+}
+
+.exposicao:nth-child(even){
+    flex-direction:row-reverse;
+}
+
+.exposicao-texto{
+    flex:1 1 300px;
+}
+
+.exposicao-texto h3{
+    font-size:34px;
+    margin-bottom:14px;
+    letter-spacing:-1px;
+    color:#111827;
+}
+
+.exposicao-texto p{
+    color:#6b7280;
+    font-size:16px;
+}
+
+/* IMAGENS */
+
 .exposicao img,
-#book3d {
-    flex: 1 1 300px;
-    max-width: 500px;
-    width: 100%;
-    aspect-ratio: 16/10;
-    border: 3px solid #000;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
+#book3d{
+    flex:1 1 320px;
+    width:100%;
+    max-width:520px;
+    aspect-ratio:16/10;
+    border-radius:24px;
+    overflow:hidden;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
 }
 
-@media (max-width: 768px) {
-    .exposicao {
-        flex-direction: column !important;
-        gap: 20px;
-        padding: 20px;
+.exposicao img{
+    object-fit:cover;
+}
+
+/* PANORAMA */
+
+#panorama{
+    width:100%;
+    height:600px;
+    border-radius:30px;
+    overflow:hidden;
+    border:1px solid #ececec;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* BOTÃO TOPO */
+
+#voltarTopo{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    width:58px;
+    height:58px;
+    border:none;
+    border-radius:50%;
+    background:rgba(17,24,39,0.92);
+    backdrop-filter:blur(10px);
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    display:none;
+    transition:0.3s;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+#voltarTopo:hover{
+    transform:scale(1.08);
+}
+
+/* FOOTER */
+
+.footer{
+    margin-top:40px;
+    background:#fafafa;
+    border-top:1px solid #ececec;
+    padding:60px 40px 25px;
+}
+
+.footer-content{
+    display:flex;
+    justify-content:space-between;
+    gap:40px;
+    flex-wrap:wrap;
+    margin-bottom:40px;
+}
+
+.footer-logo-area,
+.footer-info,
+.footer-contact{
+    flex:1 1 260px;
+}
+
+.footer h3{
+    font-size:20px;
+    margin-bottom:15px;
+    color:#111827;
+    letter-spacing:-0.5px;
+}
+
+.footer p{
+    color:#6b7280;
+    line-height:1.7;
+    max-width:350px;
+}
+
+.footer-logo{
+    width:120px;
+    height:120px;
+    border-radius:28px;
+    border:1px dashed #d1d5db;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:18px;
+    font-weight:600;
+    color:#9ca3af;
+    background:#fff;
+    margin-bottom:18px;
+    transition:0.3s;
+}
+
+.footer-logo:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+.footer-autores{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.footer-autores span{
+    padding:10px 16px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    color:#374151;
+    font-size:14px;
+}
+
+.footer-bottom{
+    padding-top:25px;
+    border-top:1px solid #ececec;
+    text-align:center;
+    color:#9ca3af;
+    font-size:14px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width:900px){
+
+    body{
+        padding:10px;
     }
 
-    .exposicao-texto {
-        text-align: left !important;
+    header{
+        flex-direction:column;
+        gap:20px;
+        padding:20px;
+    }
+
+    nav{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .hero{
+        min-height:35vh;
+    }
+
+    .hero h1{
+        font-size:42px;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .secao{
+        padding:50px 20px;
+    }
+
+    .secao h2{
+        font-size:34px;
+        margin-bottom:30px;
+    }
+
+    .exposicao{
+        flex-direction:column !important;
+        padding:20px;
+        gap:25px;
+    }
+
+    .exposicao-texto{
+        text-align:left !important;
+    }
+
+    .exposicao-texto h3{
+        font-size:28px;
+    }
+
+    #panorama{
+        height:420px;
+    }
+
+    .footer{
+        padding:40px 20px 20px;
+    }
+
+    .footer-content{
+        flex-direction:column;
+        gap:35px;
+    }
+
+    .footer-logo{
+        width:100px;
+        height:100px;
     }
 }
 
-.exposicao:hover {
-    background: #f5f5f5;
-}
-
-#panorama {
-    width: 100%;
-    height: 500px;
-    border: 2px solid #000;
-}
-
-#voltarTopo {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    background: #000;
-    padding: 18px;
-    border-radius: 50%;
-    color: #fff;
-    cursor: pointer;
-    display: none;
-}
 </style>
 </head>
 
 <body id="topo">
-<div class="site-container">
 
 <div id="loading">
-    <img class="loading-logo" src="https://cdn-icons-png.flaticon.com/512/854/854878.png">
+    <img
+    class="loading-logo"
+    src="https://cdn-icons-png.flaticon.com/512/854/854878.png"
+    alt="Loading"
+    />
 </div>
 
+<div class="site-container">
+
 <header>
-    <div class="logo">museu de arte</div>
+
+    <div class="logo">
+        museu de arte
+    </div>
+
     <nav>
         <a href="#expo">Exposição</a>
         <a href="#viewer">Explorar</a>
     </nav>
+
 </header>
 
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Museu de Exposições
+        </h1>
+
+        <p>
+            Explore obras, ambientes imersivos e experiências digitais
+            em um espaço minimalista e interativo.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- EXPOSIÇÕES -->
+
 <section id="expo" class="secao">
+
     <h2>Exposição</h2>
 
-    <div class="exposicao" onclick="irParaCena(0, 10, 45)">
+    <!-- OBRA 1 -->
+
+    <div class="exposicao">
+
         <div id="book3d"></div>
 
         <div class="exposicao-texto">
-            <h3>Retrato Iya Maria Divina</h3>
+
+            <h3>
+                Retrato Iya Maria Divina
+            </h3>
+
             <p>
-            Retrato Iya Maria Divina. Ile Ase Omo L’Oya Tope, Curitiba-PR. 2019.<br><br>
-             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2021.
-             2019.
-             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2020.<br><br>
-             Casa Rosa, Curitiba-PR. 2021.
-             2021.
-             Casa Rosa, Curitiba-PR, 2021.<br><br>
-             2021.
-             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2022.
-             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2019.
-             Retrato Baba Gilson Ifakolade. Ile Mole, Almirante Tamandaré-PR, 2019.
-             Ile Alaketu Ijoba Ase Baru, Foz do Iguaçu-PR, 2021.
+                Uma experiência artística interativa combinando
+                arte física e exploração digital tridimensional.
             </p>
+
         </div>
+
     </div>
 
-    <div class="exposicao" onclick="irParaCena(1, 10, 90)">
-        <img src="https://i.postimg.cc/rpGFwQHz/obra021.jpg/601/400">
+    <!-- OBRA 2 -->
+
+    <div
+    class="exposicao"
+    onclick="irParaCena(1)"
+    >
+
+        <img
+        loading="lazy"
+        src="https://i.postimg.cc/rpGFwQHz/obra021.jpg/601/400"
+        alt="Obra 2"
+        />
+
         <div class="exposicao-texto">
-            <h3>Obra 2</h3>
+
+            <h3>
+                Obra 2
+            </h3>
+
             <p>
-Discutir a patrimonialização pela perspectiva dos povos de terreiro requer uma investigação não apenas das questões históricas, antropológicas, arqueológicas...<br><br>
+                Ambiente imersivo criado para navegação panorâmica
+                e contemplação artística virtual.
+            </p>
 
-Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escravizados criaram condições para sobrevivência de suas culturas, e foi nele e sobre ele que inscreveram, guardaram e performaram o que hoje chamamos de culturas brasileiras de matriz africana.
-</p>
         </div>
+
     </div>
+
 </section>
 
-<section class="hero">
-    <h1>Museu de Exposições</h1>
-</section>
+<!-- VIEWER -->
 
 <section id="viewer" class="secao">
-    <h2>Explorar Ambientes</h2>
+
+    <h2>
+        Explorar Ambientes
+    </h2>
+
     <div id="panorama"></div>
+
 </section>
 
-<button id="voltarTopo" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div class="footer-logo-area">
+
+            <div class="footer-logo">
+                LOGO
+            </div>
+
+            <p>
+                Espaço reservado para identidade visual do projeto.
+            </p>
+
+        </div>
+
+        <div class="footer-info">
+
+            <h3>
+                Sobre o Projeto
+            </h3>
+
+            <p>
+                Museu digital interativo desenvolvido para experiências
+                imersivas em arte, exposição virtual e navegação panorâmica.
+            </p>
+
+            <div class="footer-autores">
+
+                <span>
+                    Pedro Almeida
+                </span>
+
+                <span>
+                    Taís Serpa
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="footer-contact">
+
+            <h3>
+                Informações
+            </h3>
+
+            <p>
+                Projeto conceitual desenvolvido para apresentações,
+                exposições e experiências artísticas digitais.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+        © 2026 Museu de Arte Digital — Todos os direitos reservados.
+
+    </div>
+
+</footer>
+
+<button
+id="voltarTopo"
+onclick="window.scrollTo({top:0,behavior:'smooth'})"
+>
+↑
+</button>
 
 </div>
 
+<!-- SCRIPTS -->
+
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
+
 const scenes = [
-    { image: "https://i.postimg.cc/xTjpvM9v/casa.jpg", hotspots: [{ title: "Ir", sceneIndex: 1, pitch: 0, yaw: -150 }] },
-    { image: "https://i.postimg.cc/wMSj5HS1/sala.jpg", hotspots: [{ title: "Voltar", sceneIndex: 0, pitch: 0, yaw: 120 }] }
+
+    {
+        image:"https://i.postimg.cc/tJzrtbTP/IMG-0052-(1)-(1).jpg",
+
+        hotspots:[
+            {
+                title:"Ir",
+                sceneIndex:1,
+                pitch:0,
+                yaw:-150
+            }
+        ]
+    },
+
+    {
+        image:"https://i.postimg.cc/wMSj5HS1/sala.jpg",
+
+        hotspots:[
+            {
+                title:"Voltar",
+                sceneIndex:0,
+                pitch:0,
+                yaw:120
+            }
+        ]
+    }
+
 ];
 
 let viewer;
 
-function criarHotspots(hotspots) {
+/* HOTSPOTS */
+
+function criarHotspots(hotspots){
+
     return hotspots.map(h => ({
-        pitch: h.pitch,
-        yaw: h.yaw,
-        type: "info",
-        text: h.title,
-        clickHandlerFunc: () => carregarCena(h.sceneIndex)
+
+        pitch:h.pitch,
+        yaw:h.yaw,
+        type:"info",
+        text:h.title,
+
+        clickHandlerFunc:() => carregarCena(h.sceneIndex)
+
     }));
+
 }
 
-function carregarCena(index) {
-    if (viewer) viewer.destroy();
-    viewer = pannellum.viewer('panorama', {
-        type: 'equirectangular',
-        panorama: scenes[index].image,
-        autoLoad: true,
-        hotSpots: criarHotspots(scenes[index].hotspots)
+/* CENAS */
+
+function carregarCena(index){
+
+    if(viewer){
+        viewer.destroy();
+    }
+
+    viewer = pannellum.viewer('panorama',{
+
+        type:'equirectangular',
+
+        panorama:scenes[index].image,
+
+        autoLoad:true,
+
+        showControls:true,
+
+        compass:true,
+
+        hotSpots:criarHotspots(
+            scenes[index].hotspots
+        )
+
     });
+
 }
 
-function criarLivro3D() {
-    const container = document.getElementById("book3d");
+/* IR PARA CENA */
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+function irParaCena(index){
+
+    document
+    .getElementById("viewer")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+    setTimeout(() => {
+
+        carregarCena(index);
+
+    },500);
+
+}
+
+/* LIVRO 3D */
+
+function criarLivro3D(){
+
+    const container =
+    document.getElementById("book3d");
+
+    const scene =
+    new THREE.Scene();
+
+    const camera =
+    new THREE.PerspectiveCamera(
+        75,
+        container.clientWidth /
+        container.clientHeight,
+        0.1,
+        1000
+    );
+
     camera.position.z = 3;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
+    const renderer =
+    new THREE.WebGLRenderer({
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        antialias:true,
+        alpha:true
+
+    });
+
+    renderer.setPixelRatio(
+        window.devicePixelRatio
+    );
+
+    renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+    );
+
+    container.appendChild(
+        renderer.domElement
+    );
+
+    const controls =
+    new THREE.OrbitControls(
+        camera,
+        renderer.domElement
+    );
+
     controls.enableDamping = true;
+    controls.enableZoom = false;
 
-    const geometry = new THREE.BoxGeometry(1.5, 2.2, 0.3);
-    const loader = new THREE.TextureLoader();
+    const geometry =
+    new THREE.BoxGeometry(
+        1.5,
+        2.2,
+        0.15
+    );
 
-    const lateral2 = loader.load("https://i.postimg.cc/W3kmcK3G/corpo-no-candomble-1-page-0001.jpg");
-    lateral2.center.set(0.5, 0.5);
+    const loader =
+    new THREE.TextureLoader();
+
+    const lateral2 =
+    loader.load(
+        "https://i.postimg.cc/HLxxYNp8/linha.jpg"
+    );
+
+    lateral2.center.set(0.5,0.5);
     lateral2.rotation = Math.PI;
 
-    const lateral = loader.load("https://i.postimg.cc/x8XwQ9mB/paginasc-borda.jpg");
-    lateral.center.set(0.5, 0.5);
+    const lateral =
+    loader.load(
+        "https://i.postimg.cc/JzTX5Zn9/paginas.jpg"
+    );
+
+    lateral.center.set(0.5,0.5);
     lateral.rotation = Math.PI/2;
 
+    const latera3 =
+    loader.load(
+        "https://i.postimg.cc/JzTX5Zn9/paginas.jpg"
+    );
+
     const material = [
-        new THREE.MeshBasicMaterial({ map: lateral }),
-        new THREE.MeshBasicMaterial({ map: lateral2 }),
-        new THREE.MeshBasicMaterial({ map: loader.load("https://i.postimg.cc/x8XwQ9mB/paginasc-borda.jpg") }),
-        new THREE.MeshBasicMaterial({ map: loader.load("https://i.postimg.cc/x8XwQ9mB/paginasc-borda.jpg") }),
-        new THREE.MeshBasicMaterial({ map: loader.load("https://i.postimg.cc/026W2tBc/corpo-no-candomble-1-page-0001.jpg") }),
-        new THREE.MeshBasicMaterial({ map: loader.load("https://i.postimg.cc/fbv5g1Vc/corpo-no-candomble-70-page-0001.jpg") })
+
+        new THREE.MeshBasicMaterial({
+            map:lateral
+        }),
+
+        new THREE.MeshBasicMaterial({
+            map:lateral2
+        }),
+
+        new THREE.MeshBasicMaterial({
+            map:latera3
+        }),
+
+        new THREE.MeshBasicMaterial({
+            map:latera3
+        }),
+
+        new THREE.MeshBasicMaterial({
+            map:loader.load(
+                "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg"
+            )
+        }),
+
+        new THREE.MeshBasicMaterial({
+            map:loader.load(
+                "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg"
+            )
+        })
+
     ];
 
-    const book = new THREE.Mesh(geometry, material);
+    const book =
+    new THREE.Mesh(
+        geometry,
+        material
+    );
+
     scene.add(book);
 
-    function animate() {
-        requestAnimationFrame(animate);
+    const ambient =
+    new THREE.AmbientLight(
+        0xffffff,
+        1.5
+    );
+
+    scene.add(ambient);
+
+    function animate(){
+
+        requestAnimationFrame(
+            animate
+        );
+
+        book.rotation.y += 0.002;
+
         controls.update();
-        renderer.render(scene, camera);
+
+        renderer.render(
+            scene,
+            camera
+        );
+
     }
 
     animate();
+
+    window.addEventListener(
+        "resize",
+        () => {
+
+            camera.aspect =
+            container.clientWidth /
+            container.clientHeight;
+
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(
+                container.clientWidth,
+                container.clientHeight
+            );
+
+        }
+    );
+
 }
 
-function init() {
+/* INIT */
+
+function init(){
+
     carregarCena(0);
+
     criarLivro3D();
 
     setTimeout(() => {
-        document.getElementById("loading").style.display = "none";
-    }, 1200);
+
+        document
+        .getElementById("loading")
+        .style.opacity = "0";
+
+        setTimeout(() => {
+
+            document
+            .getElementById("loading")
+            .style.display = "none";
+
+        },400);
+
+    },1200);
+
 }
 
-window.onscroll = function() {
-    document.getElementById("voltarTopo").style.display =
-        document.documentElement.scrollTop > 200 ? "block" : "none";
+/* BOTÃO TOPO */
+
+window.onscroll = function(){
+
+    document
+    .getElementById("voltarTopo")
+    .style.display =
+
+    document.documentElement.scrollTop > 250
+    ? "block"
+    : "none";
+
 };
 
 window.onload = init;
+
 </script>
 
 </body>
