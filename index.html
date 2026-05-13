@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Museu de Arte</title>
 
+<!-- SEGURANÇA -->
 <meta http-equiv="Content-Security-Policy"
 content="
 default-src 'self' https: data: blob:;
-img-src * data: blob:;
+img-src 'self' https: data: blob:;
 script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
 style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
 font-src 'self' https: data:;
+connect-src 'self' https:;
+object-src 'none';
+base-uri 'self';
+form-action 'self';
+frame-ancestors 'none';
+upgrade-insecure-requests;
 ">
+
+<meta http-equiv="Cross-Origin-Embedder-Policy" content="unsafe-none">
+<meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
 
 <link
 rel="stylesheet"
@@ -39,8 +50,6 @@ body{
     line-height:1.6;
     padding:20px;
 }
-
-/* CONTAINER */
 
 .site-container{
     max-width:1400px;
@@ -102,7 +111,6 @@ header{
     font-size:24px;
     font-weight:700;
     letter-spacing:-1px;
-    color:#111827;
 }
 
 nav{
@@ -148,7 +156,6 @@ nav a:hover{
     font-size:60px;
     letter-spacing:-3px;
     margin-bottom:20px;
-    color:#111827;
 }
 
 .hero p{
@@ -166,7 +173,6 @@ nav a:hover{
     font-size:42px;
     margin-bottom:50px;
     letter-spacing:-2px;
-    color:#111827;
 }
 
 /* EXPOSIÇÕES */
@@ -201,15 +207,12 @@ nav a:hover{
     font-size:34px;
     margin-bottom:14px;
     letter-spacing:-1px;
-    color:#111827;
 }
 
 .exposicao-texto p{
     color:#6b7280;
     font-size:16px;
 }
-
-/* IMAGENS */
 
 .exposicao img,
 #book3d{
@@ -239,30 +242,6 @@ nav a:hover{
     box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* BOTÃO TOPO */
-
-#voltarTopo{
-    position:fixed;
-    bottom:25px;
-    right:25px;
-    width:58px;
-    height:58px;
-    border:none;
-    border-radius:50%;
-    background:rgba(17,24,39,0.92);
-    backdrop-filter:blur(10px);
-    color:#fff;
-    font-size:20px;
-    cursor:pointer;
-    display:none;
-    transition:0.3s;
-    box-shadow:0 10px 25px rgba(0,0,0,0.2);
-}
-
-#voltarTopo:hover{
-    transform:scale(1.08);
-}
-
 /* FOOTER */
 
 .footer{
@@ -289,14 +268,11 @@ nav a:hover{
 .footer h3{
     font-size:20px;
     margin-bottom:15px;
-    color:#111827;
-    letter-spacing:-0.5px;
 }
 
 .footer p{
     color:#6b7280;
     line-height:1.7;
-    max-width:350px;
 }
 
 .footer-logo{
@@ -312,12 +288,6 @@ nav a:hover{
     color:#9ca3af;
     background:#fff;
     margin-bottom:18px;
-    transition:0.3s;
-}
-
-.footer-logo:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.06);
 }
 
 .footer-autores{
@@ -344,6 +314,28 @@ nav a:hover{
     font-size:14px;
 }
 
+/* BOTÃO TOPO */
+
+#voltarTopo{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    width:58px;
+    height:58px;
+    border:none;
+    border-radius:50%;
+    background:#111827;
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    display:none;
+    transition:0.3s;
+}
+
+#voltarTopo:hover{
+    transform:scale(1.08);
+}
+
 /* RESPONSIVO */
 
 @media(max-width:900px){
@@ -363,10 +355,6 @@ nav a:hover{
         justify-content:center;
     }
 
-    .hero{
-        min-height:35vh;
-    }
-
     .hero h1{
         font-size:42px;
     }
@@ -381,53 +369,33 @@ nav a:hover{
 
     .secao h2{
         font-size:34px;
-        margin-bottom:30px;
     }
 
     .exposicao{
         flex-direction:column !important;
-        padding:20px;
-        gap:25px;
-    }
-
-    .exposicao-texto{
-        text-align:left !important;
-    }
-
-    .exposicao-texto h3{
-        font-size:28px;
     }
 
     #panorama{
         height:420px;
     }
 
-    .footer{
-        padding:40px 20px 20px;
-    }
-
     .footer-content{
         flex-direction:column;
-        gap:35px;
     }
 
-    .footer-logo{
-        width:100px;
-        height:100px;
-    }
 }
 
 </style>
 </head>
 
-<body id="topo">
+<body>
 
 <div id="loading">
     <img
     class="loading-logo"
     src="https://cdn-icons-png.flaticon.com/512/854/854878.png"
     alt="Loading"
-    />
+    >
 </div>
 
 <div class="site-container">
@@ -444,8 +412,6 @@ nav a:hover{
     </nav>
 
 </header>
-
-<!-- HERO -->
 
 <section class="hero">
 
@@ -464,13 +430,9 @@ nav a:hover{
 
 </section>
 
-<!-- EXPOSIÇÕES -->
-
 <section id="expo" class="secao">
 
     <h2>Exposição</h2>
-
-    <!-- OBRA 1 -->
 
     <div class="exposicao">
 
@@ -491,18 +453,13 @@ nav a:hover{
 
     </div>
 
-    <!-- OBRA 2 -->
-
-    <div
-    class="exposicao"
-    onclick="irParaCena(1)"
-    >
+    <div class="exposicao obra2">
 
         <img
         loading="lazy"
-        src="https://i.postimg.cc/rpGFwQHz/obra021.jpg/601/400"
+        src="https://i.postimg.cc/rpGFwQHz/obra021.jpg"
         alt="Obra 2"
-        />
+        >
 
         <div class="exposicao-texto">
 
@@ -521,8 +478,6 @@ nav a:hover{
 
 </section>
 
-<!-- VIEWER -->
-
 <section id="viewer" class="secao">
 
     <h2>
@@ -532,8 +487,6 @@ nav a:hover{
     <div id="panorama"></div>
 
 </section>
-
-<!-- FOOTER -->
 
 <footer class="footer">
 
@@ -564,13 +517,8 @@ nav a:hover{
 
             <div class="footer-autores">
 
-                <span>
-                    Pedro Almeida
-                </span>
-
-                <span>
-                    Taís Serpa
-                </span>
+                <span>Pedro Almeida</span>
+                <span>Taís Serpa</span>
 
             </div>
 
@@ -599,16 +547,11 @@ nav a:hover{
 
 </footer>
 
-<button
-id="voltarTopo"
-onclick="window.scrollTo({top:0,behavior:'smooth'})"
->
+<button id="voltarTopo">
 ↑
 </button>
 
 </div>
-
-<!-- SCRIPTS -->
 
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
@@ -650,8 +593,6 @@ const scenes = [
 
 let viewer;
 
-/* HOTSPOTS */
-
 function criarHotspots(hotspots){
 
     return hotspots.map(h => ({
@@ -667,8 +608,6 @@ function criarHotspots(hotspots){
 
 }
 
-/* CENAS */
-
 function carregarCena(index){
 
     if(viewer){
@@ -679,12 +618,14 @@ function carregarCena(index){
 
         type:'equirectangular',
 
-        panorama:scenes[index].image,
+        panorama:
+        scenes[index].image +
+        "?cache=" + Date.now(),
+
+        crossOrigin:"anonymous",
 
         autoLoad:true,
-
         showControls:true,
-
         compass:true,
 
         hotSpots:criarHotspots(
@@ -695,9 +636,9 @@ function carregarCena(index){
 
 }
 
-/* IR PARA CENA */
-
-function irParaCena(index){
+document
+.querySelector(".obra2")
+.addEventListener("click", () => {
 
     document
     .getElementById("viewer")
@@ -707,13 +648,22 @@ function irParaCena(index){
 
     setTimeout(() => {
 
-        carregarCena(index);
+        carregarCena(1);
 
     },500);
 
-}
+});
 
-/* LIVRO 3D */
+document
+.getElementById("voltarTopo")
+.addEventListener("click", () => {
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+});
 
 function criarLivro3D(){
 
@@ -736,10 +686,8 @@ function criarLivro3D(){
 
     const renderer =
     new THREE.WebGLRenderer({
-
         antialias:true,
         alpha:true
-
     });
 
     renderer.setPixelRatio(
@@ -774,56 +722,33 @@ function criarLivro3D(){
     const loader =
     new THREE.TextureLoader();
 
-    const lateral2 =
-    loader.load(
-        "https://i.postimg.cc/HLxxYNp8/linha.jpg"
+    loader.setCrossOrigin(
+        "anonymous"
     );
-
-    lateral2.center.set(0.5,0.5);
-    lateral2.rotation = Math.PI;
 
     const lateral =
     loader.load(
         "https://i.postimg.cc/JzTX5Zn9/paginas.jpg"
     );
 
-    lateral.center.set(0.5,0.5);
-    lateral.rotation = Math.PI/2;
-
-    const latera3 =
+    const capa =
     loader.load(
-        "https://i.postimg.cc/JzTX5Zn9/paginas.jpg"
+        "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg"
+    );
+
+    const contracapa =
+    loader.load(
+        "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg"
     );
 
     const material = [
 
-        new THREE.MeshBasicMaterial({
-            map:lateral
-        }),
-
-        new THREE.MeshBasicMaterial({
-            map:lateral2
-        }),
-
-        new THREE.MeshBasicMaterial({
-            map:latera3
-        }),
-
-        new THREE.MeshBasicMaterial({
-            map:latera3
-        }),
-
-        new THREE.MeshBasicMaterial({
-            map:loader.load(
-                "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg"
-            )
-        }),
-
-        new THREE.MeshBasicMaterial({
-            map:loader.load(
-                "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg"
-            )
-        })
+        new THREE.MeshBasicMaterial({ map:lateral }),
+        new THREE.MeshBasicMaterial({ map:lateral }),
+        new THREE.MeshBasicMaterial({ map:lateral }),
+        new THREE.MeshBasicMaterial({ map:lateral }),
+        new THREE.MeshBasicMaterial({ map:capa }),
+        new THREE.MeshBasicMaterial({ map:contracapa })
 
     ];
 
@@ -862,27 +787,7 @@ function criarLivro3D(){
 
     animate();
 
-    window.addEventListener(
-        "resize",
-        () => {
-
-            camera.aspect =
-            container.clientWidth /
-            container.clientHeight;
-
-            camera.updateProjectionMatrix();
-
-            renderer.setSize(
-                container.clientWidth,
-                container.clientHeight
-            );
-
-        }
-    );
-
 }
-
-/* INIT */
 
 function init(){
 
@@ -908,21 +813,25 @@ function init(){
 
 }
 
-/* BOTÃO TOPO */
+window.addEventListener(
+    "scroll",
+    () => {
 
-window.onscroll = function(){
+        document
+        .getElementById("voltarTopo")
+        .style.display =
 
-    document
-    .getElementById("voltarTopo")
-    .style.display =
+        window.scrollY > 250
+        ? "block"
+        : "none";
 
-    document.documentElement.scrollTop > 250
-    ? "block"
-    : "none";
+    }
+);
 
-};
-
-window.onload = init;
+window.addEventListener(
+    "load",
+    init
+);
 
 </script>
 
