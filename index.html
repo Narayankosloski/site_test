@@ -703,10 +703,15 @@ function criarLivro3D(){
     const capa = loader.load("https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg");
     const contracapa = loader.load("https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg");
     const linha = loader.load("https://i.postimg.cc/HLxxYNp8/linha.jpg");
+	const lateralTexture = loader.load("https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
 
+	lateralTexture.center.set(0.5, 0.5);
+	lateralTexture.rotation = Math.PI / 2;
     const materials = [
 
-        new THREE.MeshStandardMaterial({ map:lateral }),
+        
+
+	new THREE.MeshStandardMaterial({ map: lateralTexture }),
         new THREE.MeshStandardMaterial({ map:linha }),
         new THREE.MeshStandardMaterial({ map:lateral }),
         new THREE.MeshStandardMaterial({ map:lateral }),
