@@ -6,7 +6,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Museu de Arte Digital | Exposição Cultural</title>
+<title>RACISMO TOMBADO</title>
 <link rel="icon" type="image/png" href="favicon.png">
 
 <link rel="stylesheet"
@@ -385,8 +385,6 @@ VIDEO
     color:#94a3b8;
 }
 
-/* ALTERAÇÃO PEDIDA */
-
 .video-box{
     width:100%;
     max-width:700px;
@@ -401,6 +399,40 @@ VIDEO
     width:100%;
     display:block;
     border-radius:18px;
+}
+
+/* =========================
+BOTÃO TOPO
+========================= */
+
+#btnTopo{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    width:56px;
+    height:56px;
+    border:none;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    font-size:24px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    transition:0.3s;
+    z-index:9999;
+    opacity:0;
+    visibility:hidden;
+}
+
+#btnTopo:hover{
+    transform:translateY(-4px);
+    background:#000;
+}
+
+#btnTopo.show{
+    opacity:1;
+    visibility:visible;
 }
 
 /* =========================
@@ -494,12 +526,12 @@ RESPONSIVO
 
 <header>
 
-    <div class="logo">MUSEU DE ARTE</div>
+    <div class="logo">EXPOSIÇÃO BEM VIVO</div>
 
     <nav>
         <a href="#livro">Livro</a>
-        <a href="#galeria">Galeria</a>
-        <a href="#explorar">Panorama</a>
+        <a href="#galeria">Exposição</a>
+        <a href="#explorar">Documentário</a>
         <a href="#creditos">Créditos</a>
     </nav>
 
@@ -507,11 +539,10 @@ RESPONSIVO
 
 <section class="hero">
 
-    <h1>Exposição Cultural Digital</h1>
+    <h1>EXPOSIÇÃO BEM VIVO</h1>
 
     <p>
-        Uma jornada imersiva pelas artes e patrimônios,
-        conectando o físico ao digital através de experiências interativas.
+        Discutir a patrimonialização pela perspectiva dos povos de terreiro requer uma investigação não apenas das questões históricas, antropológicas, arqueológicas... Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escravizados criaram condições para sobrevivência de suas culturas.
     </p>
 
 </section>
@@ -519,7 +550,7 @@ RESPONSIVO
 <section id="livro" class="secao">
 
     <div class="secao-header">
-        <h2>Livro Digital</h2>
+        <h2>LIVRO</h2>
     </div>
 
     <div class="acervo-container">
@@ -552,8 +583,7 @@ RESPONSIVO
             <h3>O Livro da Exposição</h3>
 
             <p>
-                Explore nossa publicação oficial em um ambiente tridimensional.
-                Rotacione o livro livremente e acesse a versão completa em PDF.
+                Em Racismo Tombado Baba Pedro Almeida discute questões sobre as políticas públicas de cultura em patrimônio e a cultura tradicional brasileira de matriz africana.
             </p>
 
             <a href="SEU-PDF.pdf"
@@ -572,8 +602,8 @@ RESPONSIVO
 
 <section id="galeria" class="secao galeria-section">
 
-    <div class="secao-header">
-        <h2>Galeria de Fotos</h2>
+        <div class="secao-header">
+        <h2>Galeria </h2>
     </div>
 
     <div class="obras-grid">
@@ -625,7 +655,7 @@ RESPONSIVO
 <section id="explorar" class="secao">
 
     <div class="secao-header">
-        <h2>Museu de exposições</h2>
+        <h2>Exposições</h2>
     </div>
 
     <div class="panorama-nav">
@@ -662,8 +692,8 @@ class="footer">
             <h3>Projeto</h3>
 
             <p>
-                A Patrimonialização e as Religiões
-                de Matriz Africana em Curitiba   
+                RACISMO TOMBADO
+ 
             </p>
 
         </div>
@@ -744,7 +774,7 @@ class="footer">
     <div class="video-credits-section">
 
         <div class="video-credits-header">
-            <h3>Créditos em Vídeo</h3>
+            <h3>Créditos</h3>
         </div>
 
         <div class="video-box">
@@ -771,6 +801,10 @@ class="footer">
 </footer>
 
 </div>
+
+<!-- BOTÃO TOPO -->
+
+<button id="btnTopo">↑</button>
 
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
@@ -883,10 +917,6 @@ function criarLivro3D(){
     const loader =
     new THREE.TextureLoader();
 
-    const lateral =
-    loader.load(
-    "https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
-
     const capa =
     loader.load(
     "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg");
@@ -895,27 +925,18 @@ function criarLivro3D(){
     loader.load(
     "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg");
 
-    const linha =
-    loader.load(
-    "https://i.postimg.cc/HLxxYNp8/linha.jpg");
-
-    const lateralTexture =
+    const lateral =
     loader.load(
     "https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
-
-    lateralTexture.center.set(0.5, 0.5);
-
-    lateralTexture.rotation =
-    Math.PI / 2;
 
     const materials = [
 
         new THREE.MeshStandardMaterial({
-            map:lateralTexture
+            map:lateral
         }),
 
         new THREE.MeshStandardMaterial({
-            map:linha
+            map:lateral
         }),
 
         new THREE.MeshStandardMaterial({
@@ -981,27 +1002,40 @@ function criarLivro3D(){
 
     }
 
-    window.addEventListener(
-    'resize',
-    () => {
-
-        camera.aspect =
-        container.clientWidth /
-        container.clientHeight;
-
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(
-            container.clientWidth,
-            container.clientHeight
-        );
-
-    });
-
     animate();
 }
 
 criarLivro3D();
+
+/* =========================
+BOTÃO VOLTAR AO TOPO
+========================= */
+
+const btnTopo =
+document.getElementById("btnTopo");
+
+window.addEventListener("scroll", () => {
+
+    if(window.scrollY > 300){
+
+        btnTopo.classList.add("show");
+
+    } else {
+
+        btnTopo.classList.remove("show");
+
+    }
+
+});
+
+btnTopo.addEventListener("click", () => {
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+});
 
 </script>
 
