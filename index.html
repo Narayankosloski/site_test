@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>Museu de Arte Digital | Exposição Cultural</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
 
 <style>
+
+/* =========================
+ROOT
+========================= */
 
 :root{
     --primary:#111827;
@@ -20,6 +27,10 @@
     --text-main:#111827;
     --text-muted:#6b7280;
 }
+
+/* =========================
+GLOBAL
+========================= */
 
 *{
     margin:0;
@@ -48,7 +59,9 @@ body{
     border:1px solid var(--border-color);
 }
 
-/* HEADER */
+/* =========================
+HEADER
+========================= */
 
 header{
     position:sticky;
@@ -89,7 +102,9 @@ nav a:hover{
     color:var(--primary);
 }
 
-/* HERO */
+/* =========================
+HERO
+========================= */
 
 .hero{
     padding:120px 60px;
@@ -112,7 +127,9 @@ nav a:hover{
     font-size:20px;
 }
 
-/* SEÇÕES */
+/* =========================
+SEÇÕES
+========================= */
 
 .secao{
     padding:100px 60px;
@@ -128,7 +145,9 @@ nav a:hover{
     letter-spacing:-2px;
 }
 
-/* LIVRO */
+/* =========================
+LIVRO
+========================= */
 
 .acervo-container{
     display:grid;
@@ -218,7 +237,9 @@ nav a:hover{
     box-shadow:0 10px 20px rgba(255,255,255,0.1);
 }
 
-/* GALERIA */
+/* =========================
+GALERIA
+========================= */
 
 .galeria-section{
     background:#fafafa;
@@ -258,7 +279,39 @@ nav a:hover{
     transform:scale(1.08);
 }
 
-/* PANORAMA */
+/* =========================
+PANORAMA
+========================= */
+
+.panorama-nav{
+    display:flex;
+    gap:16px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+
+.panorama-btn{
+    border:none;
+    background:#fff;
+    padding:14px 24px;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    border:1px solid var(--border-color);
+    color:var(--secondary);
+    font-size:15px;
+}
+
+.panorama-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.05);
+}
+
+.panorama-btn.active{
+    background:var(--primary);
+    color:#fff;
+}
 
 #panorama{
     width:100%;
@@ -269,7 +322,9 @@ nav a:hover{
     box-shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
-/* FOOTER */
+/* =========================
+FOOTER
+========================= */
 
 .footer{
     background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);
@@ -307,6 +362,10 @@ nav a:hover{
     margin-bottom:10px;
 }
 
+/* =========================
+VIDEO
+========================= */
+
 .video-credits-section{
     margin-top:80px;
     padding-top:60px;
@@ -325,21 +384,27 @@ nav a:hover{
     color:#94a3b8;
 }
 
+/* ALTERAÇÃO PEDIDA */
+
 .video-box{
-    overflow:hidden;
-    border-radius:24px;
-    aspect-ratio:16/9;
-    max-width:900px;
+    width:100%;
+    max-width:700px;
     margin:auto;
-    background:#000;
-    box-shadow:0 20px 60px rgba(0,0,0,0.4);
+    overflow:hidden;
+    border-radius:18px;
+    background:transparent;
+    box-shadow:none;
 }
 
 .video-box video{
     width:100%;
-    height:100%;
     display:block;
+    border-radius:18px;
 }
+
+/* =========================
+FOOTER BOTTOM
+========================= */
 
 .footer-bottom{
     margin-top:60px;
@@ -350,7 +415,9 @@ nav a:hover{
     font-size:14px;
 }
 
-/* RESPONSIVO */
+/* =========================
+RESPONSIVO
+========================= */
 
 @media(max-width:1100px){
 
@@ -410,9 +477,14 @@ nav a:hover{
     .secao h2{
         font-size:40px;
     }
+
+    .video-box{
+        max-width:100%;
+    }
 }
 
 </style>
+
 </head>
 
 <body>
@@ -425,14 +497,12 @@ nav a:hover{
 
     <nav>
         <a href="#livro">Livro</a>
-        <a href="#galeria">Galeria de Fotos</a>
+        <a href="#galeria">Galeria</a>
         <a href="#explorar">Panorama</a>
         <a href="#creditos">Créditos</a>
     </nav>
 
 </header>
-
-<!-- HERO -->
 
 <section class="hero">
 
@@ -445,8 +515,6 @@ nav a:hover{
 
 </section>
 
-<!-- LIVRO -->
-
 <section id="livro" class="secao">
 
     <div class="secao-header">
@@ -458,13 +526,22 @@ nav a:hover{
         <div class="visual-box">
 
             <div class="media-container">
-                <span class="label-badge">Livro 3D Interativo</span>
+
+                <span class="label-badge">
+                    Livro 3D Interativo
+                </span>
+
                 <div id="book3d"></div>
+
             </div>
 
             <div class="media-container">
-                <span class="label-badge">Documentação PDF</span>
-                <iframe class="pdf-frame" src="SEU-PDF.pdf"></iframe>
+
+                <iframe
+                    class="pdf-frame"
+                    src="SEU-PDF.pdf">
+                </iframe>
+
             </div>
 
         </div>
@@ -478,8 +555,12 @@ nav a:hover{
                 Rotacione o livro livremente e acesse a versão completa em PDF.
             </p>
 
-            <a href="SEU-PDF.pdf" target="_blank" class="btn">
+            <a href="SEU-PDF.pdf"
+            target="_blank"
+            class="btn">
+
                 Abrir PDF Completo
+
             </a>
 
         </div>
@@ -487,8 +568,6 @@ nav a:hover{
     </div>
 
 </section>
-
-<!-- GALERIA -->
 
 <section id="galeria" class="secao galeria-section">
 
@@ -542,82 +621,124 @@ nav a:hover{
 
 </section>
 
-<!-- PANORAMA -->
-
 <section id="explorar" class="secao">
 
     <div class="secao-header">
         <h2>Panorama 360°</h2>
     </div>
 
+    <div class="panorama-nav">
+
+        <button
+        class="panorama-btn active"
+        data-panorama="https://i.postimg.cc/mk9g0h6g/Chat-GPT-Image-16-de-mai-de-2026-23-03-31.png">
+
+            Barracão
+
+        </button>
+
+        <button
+        class="panorama-btn"
+        data-panorama="https://i.postimg.cc/3w6w6xQK/barracao.jpg">
+
+            Copa
+
+        </button>
+
+    </div>
+
     <div id="panorama"></div>
 
 </section>
 
-<!-- FOOTER -->
-
-<footer id="creditos" class="footer">
+<footer id="creditos"
+class="footer">
 
     <div class="footer-content">
 
         <div class="footer-section">
+
             <h3>Projeto</h3>
-            <p>A Patrimonialização e as Religiões de Matriz Africana em Curitiba</p>
+
+            <p>
+                A Patrimonialização e as Religiões
+                de Matriz Africana em Curitiba
+            </p>
+
         </div>
 
         <div class="footer-section">
+
             <h3>Proponente</h3>
+
             <p>Poncã Produção e Arte</p>
+
         </div>
 
         <div class="footer-section">
+
             <h3>Coordenação</h3>
+
             <ul>
                 <li>Pedro Almeida</li>
             </ul>
+
         </div>
 
         <div class="footer-section">
+
             <h3>Produção</h3>
+
             <ul>
                 <li>Thais Serpa</li>
             </ul>
+
         </div>
 
         <div class="footer-section">
+
             <h3>Captação de Imagens</h3>
+
             <ul>
                 <li>Camila Oliveira</li>
                 <li>Heric Nogueira</li>
                 <li>Thais Serpa</li>
             </ul>
+
         </div>
 
         <div class="footer-section">
+
             <h3>Edição de Vídeo</h3>
+
             <ul>
                 <li>Heric Nogueira</li>
             </ul>
+
         </div>
 
         <div class="footer-section">
+
             <h3>Webdesign</h3>
+
             <ul>
                 <li>Narayan Kosloski</li>
             </ul>
+
         </div>
 
         <div class="footer-section">
+
             <h3>Realização</h3>
+
             <ul>
                 <li>Andará Produções</li>
                 <li>Casa Rosa Espaço Cultural</li>
             </ul>
+
         </div>
 
     </div>
-
-    <!-- VIDEO -->
 
     <div class="video-credits-section">
 
@@ -627,9 +748,12 @@ nav a:hover{
 
         <div class="video-box">
 
-            <video controls poster="https://i.postimg.cc/KjxvbSyf/casarosa.png">
+            <video controls
+            poster="https://i.postimg.cc/KjxvbSyf/casarosa.png">
 
-                <source src="SEU-VIDEO.mp4" type="video/mp4">
+                <source
+                src="SEU-VIDEO.mp4"
+                type="video/mp4">
 
             </video>
 
@@ -638,14 +762,14 @@ nav a:hover{
     </div>
 
     <div class="footer-bottom">
+
         © 2026 Museu de Arte Digital • Curitiba, PR
+
     </div>
 
 </footer>
 
 </div>
-
-<!-- SCRIPTS -->
 
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
@@ -655,82 +779,189 @@ nav a:hover{
 
 <script>
 
-/* PANORAMA */
+let viewer = pannellum.viewer('panorama', {
 
-pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: 'https://i.postimg.cc/qqYYLpqB/panoramanovo.png',
+
+    panorama:
+    'https://i.postimg.cc/mk9g0h6g/Chat-GPT-Image-16-de-mai-de-2026-23-03-31.png',
+
     autoLoad: true,
     compass: true,
     friction: 0.05
+
 });
 
-/* LIVRO 3D */
+const botoesPanorama =
+document.querySelectorAll(".panorama-btn");
+
+botoesPanorama.forEach(botao => {
+
+    botao.addEventListener("click", () => {
+
+        botoesPanorama.forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+        botao.classList.add("active");
+
+        const novaImagem =
+        botao.dataset.panorama;
+
+        viewer.destroy();
+
+        viewer = pannellum.viewer('panorama', {
+
+            type: 'equirectangular',
+
+            panorama: novaImagem,
+
+            autoLoad: true,
+            compass: true,
+            friction: 0.05
+
+        });
+
+    });
+
+});
 
 function criarLivro3D(){
 
-    const container = document.getElementById("book3d");
+    const container =
+    document.getElementById("book3d");
 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f172a);
+    const scene =
+    new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(
+    scene.background =
+    new THREE.Color(0x0f172a);
+
+    const camera =
+    new THREE.PerspectiveCamera(
         75,
-        container.clientWidth / container.clientHeight,
+        container.clientWidth /
+        container.clientHeight,
         0.1,
         1000
     );
 
     camera.position.z = 3.5;
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer =
+    new THREE.WebGLRenderer({
         antialias:true
     });
 
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+    );
 
-    container.appendChild(renderer.domElement);
+    container.appendChild(
+        renderer.domElement
+    );
 
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    const controls =
+    new THREE.OrbitControls(
+        camera,
+        renderer.domElement
+    );
 
     controls.enableZoom = false;
 
-    const geometry = new THREE.BoxGeometry(1.6, 2.3, 0.18);
+    const geometry =
+    new THREE.BoxGeometry(
+        1.6,
+        2.3,
+        0.18
+    );
 
-    const loader = new THREE.TextureLoader();
+    const loader =
+    new THREE.TextureLoader();
 
-    const lateral = loader.load("https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
-    const capa = loader.load("https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg");
-    const contracapa = loader.load("https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg");
-    const linha = loader.load("https://i.postimg.cc/HLxxYNp8/linha.jpg");
-	const lateralTexture = loader.load("https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
+    const lateral =
+    loader.load(
+    "https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
 
-	lateralTexture.center.set(0.5, 0.5);
-	lateralTexture.rotation = Math.PI / 2;
+    const capa =
+    loader.load(
+    "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg");
+
+    const contracapa =
+    loader.load(
+    "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg");
+
+    const linha =
+    loader.load(
+    "https://i.postimg.cc/HLxxYNp8/linha.jpg");
+
+    const lateralTexture =
+    loader.load(
+    "https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
+
+    lateralTexture.center.set(0.5, 0.5);
+
+    lateralTexture.rotation =
+    Math.PI / 2;
+
     const materials = [
 
-        
+        new THREE.MeshStandardMaterial({
+            map:lateralTexture
+        }),
 
-	new THREE.MeshStandardMaterial({ map: lateralTexture }),
-        new THREE.MeshStandardMaterial({ map:linha }),
-        new THREE.MeshStandardMaterial({ map:lateral }),
-        new THREE.MeshStandardMaterial({ map:lateral }),
-        new THREE.MeshStandardMaterial({ map:capa }),
-        new THREE.MeshStandardMaterial({ map:contracapa })
+        new THREE.MeshStandardMaterial({
+            map:linha
+        }),
+
+        new THREE.MeshStandardMaterial({
+            map:lateral
+        }),
+
+        new THREE.MeshStandardMaterial({
+            map:lateral
+        }),
+
+        new THREE.MeshStandardMaterial({
+            map:capa
+        }),
+
+        new THREE.MeshStandardMaterial({
+            map:contracapa
+        })
 
     ];
 
-    const book = new THREE.Mesh(geometry, materials);
+    const book =
+    new THREE.Mesh(
+        geometry,
+        materials
+    );
 
     scene.add(book);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    const ambientLight =
+    new THREE.AmbientLight(
+        0xffffff,
+        0.8
+    );
 
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 1);
+    const pointLight =
+    new THREE.PointLight(
+        0xffffff,
+        1
+    );
 
-    pointLight.position.set(5,5,5);
+    pointLight.position.set(
+        5,
+        5,
+        5
+    );
 
     scene.add(pointLight);
 
@@ -742,17 +973,27 @@ function criarLivro3D(){
 
         controls.update();
 
-        renderer.render(scene, camera);
+        renderer.render(
+            scene,
+            camera
+        );
 
     }
 
-    window.addEventListener('resize', () => {
+    window.addEventListener(
+    'resize',
+    () => {
 
-        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.aspect =
+        container.clientWidth /
+        container.clientHeight;
 
         camera.updateProjectionMatrix();
 
-        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setSize(
+            container.clientWidth,
+            container.clientHeight
+        );
 
     });
 
