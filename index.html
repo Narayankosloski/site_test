@@ -246,38 +246,126 @@ GALERIA
     background:#fafafa;
 }
 
-.obras-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:28px;
+/* ESTILO DO CARROSSEL */
+.carrossel-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.obra-card{
-    position:relative;
-    overflow:hidden;
-    border-radius:24px;
-    background:#fff;
-    border:1px solid var(--border-color);
-    transition:0.4s;
-    aspect-ratio:3/4;
-    box-shadow:0 10px 30px rgba(0,0,0,0.04);
+.carrossel-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
 
-.obra-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 25px 50px rgba(0,0,0,0.12);
+.carrossel {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    width: 100%;
 }
 
-.obra-img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    transition:0.5s;
+.obra-card {
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+    background: #f5f5f5;
+    position: relative;
+    overflow: hidden;
 }
 
-.obra-card:hover .obra-img{
-    transform:scale(1.08);
+.obra-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+.obra-card:hover .obra-img {
+    transform: scale(1.02);
+}
+
+/* Controles do Carrossel */
+.carrossel-controles {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0 20px;
+}
+
+.btn-nav {
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--accent);
+    background-color: transparent;
+    color: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.btn-nav:hover {
+    background-color: var(--accent);
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-nav:active {
+    transform: scale(0.95);
+}
+
+/* Indicadores */
+.indicadores {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.indicador {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicador.ativo {
+    background-color: var(--accent);
+    width: 28px;
+    border-radius: 5px;
+}
+
+.indicador:hover {
+    background-color: var(--accent);
+}
+
+/* Contador */
+.contador {
+    font-size: 14px;
+    color: var(--text-muted);
+    min-width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* Grid original (hidden quando carrossel ativo) */
+.obras-grid {
+    display: none;
 }
 
 /* =========================
@@ -385,6 +473,8 @@ VIDEO
     color:#94a3b8;
 }
 
+/* ALTERAÇÃO PEDIDA */
+
 .video-box{
     width:100%;
     max-width:700px;
@@ -399,40 +489,6 @@ VIDEO
     width:100%;
     display:block;
     border-radius:18px;
-}
-
-/* =========================
-BOTÃO TOPO
-========================= */
-
-#btnTopo{
-    position:fixed;
-    bottom:30px;
-    right:30px;
-    width:56px;
-    height:56px;
-    border:none;
-    border-radius:50%;
-    background:var(--primary);
-    color:#fff;
-    font-size:24px;
-    font-weight:700;
-    cursor:pointer;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-    transition:0.3s;
-    z-index:9999;
-    opacity:0;
-    visibility:hidden;
-}
-
-#btnTopo:hover{
-    transform:translateY(-4px);
-    background:#000;
-}
-
-#btnTopo.show{
-    opacity:1;
-    visibility:visible;
 }
 
 /* =========================
@@ -458,10 +514,6 @@ RESPONSIVO
         grid-template-columns:1fr;
     }
 
-    .obras-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
     .hero h1{
         font-size:52px;
     }
@@ -476,6 +528,12 @@ RESPONSIVO
 
     .footer{
         padding:70px 30px 40px;
+    }
+
+    .btn-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
     }
 }
 
@@ -499,10 +557,6 @@ RESPONSIVO
         font-size:42px;
     }
 
-    .obras-grid{
-        grid-template-columns:1fr;
-    }
-
     #panorama{
         height:500px;
     }
@@ -513,6 +567,26 @@ RESPONSIVO
 
     .video-box{
         max-width:100%;
+    }
+
+    .carrossel-controles {
+        padding: 15px 10px;
+        gap: 10px;
+    }
+
+    .btn-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .contador {
+        font-size: 12px;
+        min-width: 45px;
+    }
+
+    .indicador.ativo {
+        width: 20px;
     }
 }
 
@@ -526,23 +600,27 @@ RESPONSIVO
 
 <header>
 
-    <div class="logo">EXPOSIÇÃO BEM VIVO</div>
+    <div class="logo">RACISMO TOMBADO
+</div>
 
     <nav>
         <a href="#livro">Livro</a>
         <a href="#galeria">Exposição</a>
-        <a href="#explorar">Documentário</a>
-        <a href="#creditos">Créditos</a>
+        <a href="#explorar">Documentario</a>
+        
     </nav>
 
 </header>
 
 <section class="hero">
 
-    <h1>EXPOSIÇÃO BEM VIVO</h1>
+    <h1>RACISMO TOMBADO
+</h1>
 
     <p>
-        Discutir a patrimonialização pela perspectiva dos povos de terreiro requer uma investigação não apenas das questões históricas, antropológicas, arqueológicas... Mas um estudo acerca do corpo, pois foi no corpo que homens e mulheres escravizados criaram condições para sobrevivência de suas culturas.
+        Em Racismo Tombado Baba Pedro Almeida discute questões sobre as políticas públicas de cultura em patrimônio e a cultura tradicional brasileira de matriz africana e a influência do racismo no (não) desenvolvimento de ações de salvaguarda de bens afro-brasileiros.
+
+
     </p>
 
 </section>
@@ -580,10 +658,11 @@ RESPONSIVO
 
         <div class="acervo-info">
 
-            <h3>O Livro da Exposição</h3>
+            <h3>O Livro</h3>
 
             <p>
-                Em Racismo Tombado Baba Pedro Almeida discute questões sobre as políticas públicas de cultura em patrimônio e a cultura tradicional brasileira de matriz africana.
+                Em Racismo Tombado Baba Pedro Almeida discute questões sobre as políticas públicas de cultura em patrimônio e a cultura tradicional brasileira de matriz africana e a influência do racismo no (não) desenvolvimento de ações de salvaguarda de bens afro-brasileiros.
+
             </p>
 
             <a href="SEU-PDF.pdf"
@@ -595,61 +674,91 @@ RESPONSIVO
             </a>
 
         </div>
-
+ <!-- SEÇÃO DE TEXTO SOBRE A OBRA - FORA DO BOX AZUL -->
+    	<div class="obra-descricao">
+        	<h3>Sobre a Obra</h3>
+        	<p>
+        	    <strong>Título:</strong> Adicione o título da obra aqui
+        	</p>
+       	 	<p>
+       	     		<strong>Descrição:</strong> Coloque aqui a descrição detalhada sobre a obra, seu contexto, significado e importância. Você pode adicionar quantos parágrafos precisar.
+       	 	</p>
+        	<p>
+            		<strong>Ano:</strong> Adicione o ano de publicação ou criação
+        	</p>
+        	<p>
+            		<strong>Autor:</strong> Informações sobre o autor ou criador da obra
+        	</p>
     </div>
-
 </section>
 
 <section id="galeria" class="secao galeria-section">
 
-        <div class="secao-header">
-        <h2>Galeria </h2>
+    <div class="secao-header">
+        <h2>bem vivo</h2>
     </div>
 
-    <div class="obras-grid">
+    <!-- CARROSSEL -->
+    <div class="carrossel-container">
+        <div class="carrossel-wrapper">
+            <div class="carrossel" id="carrossel">
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/wBJ53Jgd/009.jpg" alt="Obra 1">
+                </div>
 
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/wBJ53Jgd/009.jpg">
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/7L71b7wD/005.jpg" alt="Obra 2">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/CKDCdDSg/007.jpg" alt="Obra 3">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/25vd3vrp/010.jpg" alt="Obra 4">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/Kz2PTzv6/011.jpg" alt="Obra 5">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/xC2vmC1D/013.jpg" alt="Obra 6">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/nzJ4mzhH/015.jpg" alt="Obra 7">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/3RTXGRxY/017.jpg" alt="Obra 8">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/RFB7tFZV/018.jpg" alt="Obra 9">
+                </div>
+
+                <div class="obra-card">
+                    <img class="obra-img" src="https://i.postimg.cc/ydHmRd8g/019.jpg" alt="Obra 10">
+                </div>
+            </div>
         </div>
 
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/7L71b7wD/005.jpg">
-        </div>
+        <!-- Controles -->
+        <div class="carrossel-controles">
+            <button class="btn-nav" id="btnAnterior" title="Anterior">❮</button>
+            
+            <div class="indicadores" id="indicadores"></div>
+            
+            <button class="btn-nav" id="btnProximo" title="Próximo">❯</button>
 
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/CKDCdDSg/007.jpg">
+            <div class="contador">
+                <span id="atual">1</span> / <span id="total">10</span>
+            </div>
         </div>
-
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/25vd3vrp/010.jpg">
-        </div>
-
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/Kz2PTzv6/011.jpg">
-        </div>
-
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/xC2vmC1D/013.jpg">
-        </div>
-
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/nzJ4mzhH/015.jpg">
-        </div>
-
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/3RTXGRxY/017.jpg">
-        </div>
-
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/RFB7tFZV/018.jpg">
-        </div>
-
-        <div class="obra-card">
-            <img class="obra-img" src="https://i.postimg.cc/ydHmRd8g/019.jpg">
-        </div>
-
     </div>
 
+    
 </section>
 
 <section id="explorar" class="secao">
@@ -664,7 +773,7 @@ RESPONSIVO
         class="panorama-btn active"
         data-panorama="https://i.postimg.cc/mk9g0h6g/Chat-GPT-Image-16-de-mai-de-2026-23-03-31.png">
 
-            Barracão
+            Sala 1
 
         </button>
 
@@ -672,7 +781,7 @@ RESPONSIVO
         class="panorama-btn"
         data-panorama="https://i.postimg.cc/8c89cCtQ/edit02.png">
 
-            Copa
+            Sala 2
 
         </button>
 
@@ -774,7 +883,7 @@ class="footer">
     <div class="video-credits-section">
 
         <div class="video-credits-header">
-            <h3>Créditos</h3>
+          
         </div>
 
         <div class="video-box">
@@ -802,10 +911,6 @@ class="footer">
 
 </div>
 
-<!-- BOTÃO TOPO -->
-
-<button id="btnTopo">↑</button>
-
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -814,6 +919,85 @@ class="footer">
 
 <script>
 
+// ===== CARROSSEL =====
+const carrossel = document.getElementById('carrossel');
+const btnAnterior = document.getElementById('btnAnterior');
+const btnProximo = document.getElementById('btnProximo');
+const indicadoresContainer = document.getElementById('indicadores');
+const spanAtual = document.getElementById('atual');
+const spanTotal = document.getElementById('total');
+
+const obras = document.querySelectorAll('.carrossel .obra-card');
+let indiceAtual = 0;
+const totalObras = obras.length;
+
+// Atualizar total
+spanTotal.textContent = totalObras;
+
+// Criar indicadores
+for (let i = 0; i < totalObras; i++) {
+    const indicador = document.createElement('div');
+    indicador.className = 'indicador';
+    if (i === 0) indicador.classList.add('ativo');
+    indicador.addEventListener('click', () => irPara(i));
+    indicadoresContainer.appendChild(indicador);
+}
+
+const indicadores = document.querySelectorAll('.indicador');
+
+function atualizarCarrossel() {
+    const deslocamento = -indiceAtual * 100;
+    carrossel.style.transform = `translateX(${deslocamento}%)`;
+    
+    // Atualizar indicadores
+    indicadores.forEach((ind, i) => {
+        ind.classList.toggle('ativo', i === indiceAtual);
+    });
+
+    // Atualizar contador
+    spanAtual.textContent = indiceAtual + 1;
+}
+
+function proximo() {
+    indiceAtual = (indiceAtual + 1) % totalObras;
+    atualizarCarrossel();
+}
+
+function anterior() {
+    indiceAtual = (indiceAtual - 1 + totalObras) % totalObras;
+    atualizarCarrossel();
+}
+
+function irPara(indice) {
+    indiceAtual = indice;
+    atualizarCarrossel();
+}
+
+// Event listeners
+btnProximo.addEventListener('click', proximo);
+btnAnterior.addEventListener('click', anterior);
+
+// Navegação por teclado
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') proximo();
+    if (e.key === 'ArrowLeft') anterior();
+});
+
+// Navegação por swipe (mobile)
+let touchStartX = 0;
+let touchEndX = 0;
+
+carrossel.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+carrossel.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX - touchEndX > 50) proximo();
+    if (touchEndX - touchStartX > 50) anterior();
+});
+
+// ===== PANORAMA =====
 let viewer = pannellum.viewer('panorama', {
 
     type: 'equirectangular',
@@ -863,6 +1047,7 @@ botoesPanorama.forEach(botao => {
 
 });
 
+// ===== LIVRO 3D =====
 function criarLivro3D(){
 
     const container =
@@ -917,6 +1102,10 @@ function criarLivro3D(){
     const loader =
     new THREE.TextureLoader();
 
+    const lateral =
+    loader.load(
+    "https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
+
     const capa =
     loader.load(
     "https://i.postimg.cc/wMdgm4dy/IMG-20260406-WA0005-(1).jpg");
@@ -925,18 +1114,27 @@ function criarLivro3D(){
     loader.load(
     "https://i.postimg.cc/g2BpD2Wj/contrcapa.jpg");
 
-    const lateral =
+    const linha =
+    loader.load(
+    "https://i.postimg.cc/HLxxYNp8/linha.jpg");
+
+    const lateralTexture =
     loader.load(
     "https://i.postimg.cc/JzTX5Zn9/paginas.jpg");
+
+    lateralTexture.center.set(0.5, 0.5);
+
+    lateralTexture.rotation =
+    Math.PI / 2;
 
     const materials = [
 
         new THREE.MeshStandardMaterial({
-            map:lateral
+            map:lateralTexture
         }),
 
         new THREE.MeshStandardMaterial({
-            map:lateral
+            map:linha
         }),
 
         new THREE.MeshStandardMaterial({
@@ -1002,40 +1200,27 @@ function criarLivro3D(){
 
     }
 
+    window.addEventListener(
+    'resize',
+    () => {
+
+        camera.aspect =
+        container.clientWidth /
+        container.clientHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            container.clientWidth,
+            container.clientHeight
+        );
+
+    });
+
     animate();
 }
 
 criarLivro3D();
-
-/* =========================
-BOTÃO VOLTAR AO TOPO
-========================= */
-
-const btnTopo =
-document.getElementById("btnTopo");
-
-window.addEventListener("scroll", () => {
-
-    if(window.scrollY > 300){
-
-        btnTopo.classList.add("show");
-
-    } else {
-
-        btnTopo.classList.remove("show");
-
-    }
-
-});
-
-btnTopo.addEventListener("click", () => {
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-});
 
 </script>
 
