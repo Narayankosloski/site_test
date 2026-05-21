@@ -454,6 +454,31 @@ FOOTER
 /* =========================
 VIDEO
 ========================= */
+/* =========================
+VIDEO CENTRAL
+========================= */
+
+.video-section{
+    padding-top:20px;
+}
+
+.destaque-video{
+    max-width:1100px;
+    margin:auto;
+    border-radius:28px;
+    overflow:hidden;
+    background:#000;
+    box-shadow:
+    0 20px 60px rgba(0,0,0,0.15);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.destaque-video video{
+    width:100%;
+    display:block;
+    aspect-ratio:16/9;
+    object-fit:cover;
+}
 
 .video-credits-section{
     margin-top:80px;
@@ -691,11 +716,33 @@ RESPONSIVO
         	</p>
     </div>
 </section>
+<section class="secao video-section">
+
+    <div class="secao-header">
+        <h2>DOCUMENTÁRIO</h2>
+    </div>
+
+    <div class="video-box destaque-video">
+
+        <video
+        controls
+        preload="metadata"
+        poster="https://i.postimg.cc/KjxvbSyf/casarosa.png">
+
+            <source
+            src="SEU-VIDEO.mp4"
+            type="video/mp4">
+
+        </video>
+
+    </div>
+
+</section>
 
 <section id="galeria" class="secao galeria-section">
 
     <div class="secao-header">
-        <h2>bem vivo</h2>
+        <h2>BEM VINDO</h2>
     </div>
 
     <!-- CARROSSEL -->
@@ -764,7 +811,7 @@ RESPONSIVO
 <section id="explorar" class="secao">
 
     <div class="secao-header">
-        <h2>Exposições</h2>
+        <h2>EXPOSIÇÃO</h2>
     </div>
 
     <div class="panorama-nav">
@@ -888,8 +935,13 @@ class="footer">
 
         <div class="video-box">
 
-            <video controls
-            poster="https://i.postimg.cc/KjxvbSyf/casarosa.png">
+            <video
+autoplay
+muted
+loop
+playsinline
+controls
+poster="https://i.postimg.cc/KjxvbSyf/casarosa.png">
 
                 <source
                 src="SEU-VIDEO.mp4"
