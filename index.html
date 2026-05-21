@@ -341,14 +341,11 @@ DOCUMENTÁRIO
     0 20px 60px rgba(0,0,0,0.15);
 }
 
-.destaque-video video{
+.youtube-frame{
     width:100%;
-
-    display:block;
-
     aspect-ratio:16/9;
-
-    object-fit:cover;
+    border:none;
+    display:block;
 }
 
 /* =========================
@@ -741,7 +738,6 @@ RESPONSIVO
 
     <p>
      Em Racismo Tombado Baba Pedro Almeida discute questões sobre as políticas públicas de cultura em patrimônio e a cultura tradicional brasileira de matriz africana e a influência do racismo no (não) desenvolvimento de ações de salvaguarda de bens afro-brasileiros.
-
     </p>
 
 </section>
@@ -784,7 +780,7 @@ RESPONSIVO
             <p>
                 Em Racismo Tombado Baba Pedro Almeida discute
                 questões sobre patrimônio cultural afro-brasileiro
-                e os impactos do racismo estrutural.
+                e os impactos do racismo.
             </p>
 
             <a href="SEU-PDF.pdf"
@@ -820,23 +816,21 @@ class="secao video-section">
 
     <div class="video-box destaque-video">
 
-        <video
-        id="videoPrincipal"
-        controls
-        preload="metadata"
-        poster="https://i.postimg.cc/KjxvbSyf/casarosa.png">
+    <iframe
+    class="youtube-frame"
+    width="100%"
+    height="100%"
+    src="https://www.youtube.com/embed/PPOGZQ0dFZQ?si=1"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+    </iframe>
 
-            <source
-            src="SEU-VIDEO.mp4"
-            type="video/mp4">
-
-        </video>
-
-    </div>
+</div>
 
 </section>
-
-
 
 <section id="galeria" class="secao">
 
@@ -867,227 +861,6 @@ class="secao video-section">
     <div id="panorama"></div>
 
 </section>
-<section
-id="galeria"
-class="secao galeria-section">
-
-    <div class="secao-header">
-        
-    </div>
-
-    <div class="carrossel-container">
-
-        <div class="carrossel-wrapper">
-
-            <div class="carrossel" id="carrossel">
-
-                 <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/wBJ53Jgd/009.jpg" alt="Obra 1">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/7L71b7wD/005.jpg" alt="Obra 2">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/CKDCdDSg/007.jpg" alt="Obra 3">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/25vd3vrp/010.jpg" alt="Obra 4">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/Kz2PTzv6/011.jpg" alt="Obra 5">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/xC2vmC1D/013.jpg" alt="Obra 6">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/nzJ4mzhH/015.jpg" alt="Obra 7">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/3RTXGRxY/017.jpg" alt="Obra 8">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/RFB7tFZV/018.jpg" alt="Obra 9">
-                </div>
-
-                <div class="obra-card">
-                    <img class="obra-img" src="https://i.postimg.cc/ydHmRd8g/019.jpg" alt="Obra 10">
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="carrossel-controles">
-
-            <button
-            class="btn-nav"
-            id="btnAnterior">
-
-                ❮
-
-            </button>
-
-            <div
-            class="indicadores"
-            id="indicadores">
-            </div>
-
-            <button
-            class="btn-nav"
-            id="btnProximo">
-
-                ❯
-
-            </button>
-
-            <div class="contador">
-                <span id="atual">1</span>
-                /
-                <span id="total">3</span>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<footer class="footer">
-
-     <div class="footer-content">
-
-        <div class="footer-section">
-
-            <h3>Projeto</h3>
-
-            <p>
-                RACISMO TOMBADO
- 
-            </p>
-
-        </div>
-
-        <div class="footer-section">
-
-            <h3>Proponente</h3>
-
-            <p>Poncã Produção e Arte</p>
-
-        </div>
-
-        <div class="footer-section">
-
-            <h3>Coordenação</h3>
-
-            <ul>
-                <li>Pedro Almeida</li>
-            </ul>
-
-        </div>
-
-        <div class="footer-section">
-
-            <h3>Produção</h3>
-
-            <ul>
-                <li>Thais Serpa</li>
-            </ul>
-
-        </div>
-
-        <div class="footer-section">
-
-            <h3>Captação de Imagens</h3>
-
-            <ul>
-                <li>Camila Oliveira</li>
-                <li>Heric Nogueira</li>
-                <li>Thais Serpa</li>
-            </ul>
-
-        </div>
-
-        <div class="footer-section">
-
-            <h3>Edição de Vídeo</h3>
-
-            <ul>
-                <li>Heric Nogueira</li>
-            </ul>
-
-        </div>
-
-        <div class="footer-section">
-
-            <h3>Webdesign</h3>
-
-            <ul>
-                <li>Narayan Kosloski</li>
-            </ul>
-
-        </div>
-
-        <div class="footer-section">
-
-            <h3>Realização</h3>
-
-            <ul>
-                <li>Poncã</li>
-                
-            </ul>
-	    
-        </div>
-	<div class="footer-section">
-
-            <h3>Apoio</h3>
-
-            
-	    <ul>
-		<li>Andará  Produções e </li>
-		<li>Casa Rosa Associação Cultural</li>
-	    </ul>
-        </div>
-
-    </div>
-
-    <div class="video-credits-section">
-
-        <div class="video-box video-creditos-player">
-
-            <video
-            id="videoCreditos"
-            autoplay
-            muted
-            loop
-            playsinline
-            controls
-            poster="https://i.postimg.cc/KjxvbSyf/casarosa.png">
-
-                <source
-                src="SEU-VIDEO.mp4"
-                type="video/mp4">
-
-            </video>
-
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2026 Racismo Tombado • Curitiba, PR
-    </div>
-
-</footer>
-
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 
@@ -1096,110 +869,6 @@ class="secao galeria-section">
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 
 <script>
-
-/* =========================
-CARROSSEL
-========================= */
-
-const carrossel =
-document.getElementById('carrossel');
-
-const btnAnterior =
-document.getElementById('btnAnterior');
-
-const btnProximo =
-document.getElementById('btnProximo');
-
-const indicadoresContainer =
-document.getElementById('indicadores');
-
-const spanAtual =
-document.getElementById('atual');
-
-const spanTotal =
-document.getElementById('total');
-
-const obras =
-document.querySelectorAll('.obra-card');
-
-let indiceAtual = 0;
-
-const totalObras = obras.length;
-
-spanTotal.textContent = totalObras;
-
-for(let i = 0; i < totalObras; i++){
-
-    const indicador =
-    document.createElement('div');
-
-    indicador.className = 'indicador';
-
-    if(i === 0){
-        indicador.classList.add('ativo');
-    }
-
-    indicador.addEventListener(
-    'click',
-    () => irPara(i));
-
-    indicadoresContainer.appendChild(indicador);
-}
-
-const indicadores =
-document.querySelectorAll('.indicador');
-
-function atualizarCarrossel(){
-
-    const deslocamento =
-    -indiceAtual * 100;
-
-    carrossel.style.transform =
-    `translateX(${deslocamento}%)`;
-
-    indicadores.forEach((ind, i)=>{
-
-        ind.classList.toggle(
-        'ativo',
-        i === indiceAtual
-        );
-
-    });
-
-    spanAtual.textContent =
-    indiceAtual + 1;
-}
-
-function proximo(){
-
-    indiceAtual =
-    (indiceAtual + 1) % totalObras;
-
-    atualizarCarrossel();
-}
-
-function anterior(){
-
-    indiceAtual =
-    (indiceAtual - 1 + totalObras) % totalObras;
-
-    atualizarCarrossel();
-}
-
-function irPara(indice){
-
-    indiceAtual = indice;
-
-    atualizarCarrossel();
-}
-
-btnProximo.addEventListener(
-'click',
-proximo);
-
-btnAnterior.addEventListener(
-'click',
-anterior);
 
 /* =========================
 PANORAMA
@@ -1257,28 +926,6 @@ botoesPanorama.forEach(botao => {
     });
 
 });
-
-/* =========================
-VELOCIDADE DOS VÍDEOS
-========================= */
-
-const videoPrincipal =
-document.getElementById('videoPrincipal');
-
-if(videoPrincipal){
-
-    videoPrincipal.playbackRate = 1.25;
-
-}
-
-const videoCreditos =
-document.getElementById('videoCreditos');
-
-if(videoCreditos){
-
-    videoCreditos.playbackRate = 2.0;
-
-}
 
 /* =========================
 LIVRO 3D
